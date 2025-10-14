@@ -234,7 +234,7 @@
     .modal-preview img{
       width:100%; height:100%; object-fit:contain; display:block;
       aspect-ratio:auto;
-      cursor: zoom-in; transform-origin: 0 0; user-select:none;
+      cursor: zoom-in; transform-origin: 50% 50%; user-select:none;
     }
     .modal-preview img.zoomed{ cursor: grab; }
 
@@ -293,7 +293,7 @@
     <a href="index.html#shows">Shows</a>
     <a href="bio.html">Bio</a>
     <a href="merch.html" aria-current="page">Merch</a>
-    <a href="mailto:deadgravel77@gmail.com">Contact</a>
+    <a href="mailto:deadgravell77@gmail.com">Contact</a>
   </nav>
 
   <button class="hamburger" id="menuBtn" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -322,7 +322,8 @@
         <div class="rule"></div>
 
         <p class="product-desc" style="text-align:center; margin-inline:auto; max-width:60ch;">
-          Welcome to the <strong>Dead Gravel</strong> store. Prices include flat-rate EU shipping. For shipping outside the EU, <a href="mailto:deadgravel77@gmail.com">email us</a>.
+          Welcome to the <strong>Dead Gravel</strong> store. Prices include flat-rate EU shipping.
+          For shipping outside the EU, <a href="mailto:deadgravel77@gmail.com">email us</a>.
           Check out with <strong>Stripe</strong> (cards, Apple&nbsp;Pay, Google&nbsp;Pay, <strong>MB&nbsp;WAY</strong>) or <strong>PayPal</strong>.
         </p>
       </div>
@@ -667,10 +668,11 @@
       </div>
     `;
     document.body.appendChild(colorModal);
-    const swatchRow = colorModal.querySelector('#swatchRow');
-    const previewImg = colorModal.querySelector('.modal-body img');
+    const swatchRow   = colorModal.querySelector('#swatchRow');
+    const previewImg  = colorModal.querySelector('.modal-body img');
     const closeModalBtn = colorModal.querySelector('.modal-close');
-    const cancelBtn = colorModal.querySelector('#cancelBtn');
+    const cancelBtn     = colorModal.querySelector('#cancelBtn');
+    const previewBox    = colorModal.querySelector('.modal-preview'); // <-- moved here (fix)
 
     let modalCard = null;
 
@@ -727,34 +729,33 @@
     let offset = { x:0, y:0 };
     let dragging = false;
     let dragStart = { x:0, y:0 };
-    const SCALE = 2.2;
+    const SCALE = 2; // 2x is plenty and keeps things predictable
 
     function applyTransform(){
       previewImg.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${zoomed ? SCALE : 1})`;
     }
+
     function resetZoom(){
       zoomed = false; dragging = false; offset = { x:0, y:0 };
       previewImg.classList.remove('zoomed');
       previewImg.style.transform = 'translate(0,0) scale(1)';
       previewImg.style.cursor = 'zoom-in';
     }
+
+    // Clamp offsets based on the container (previewBox)
     function clampPan(){
-      const box = previewImg.getBoundingClientRect();
-      const extraW = box.width * (SCALE - 1) / SCALE;
-      const extraH = box.height * (SCALE - 1) / SCALE;
-      const maxX = extraW / 2;
-      const maxY = extraH / 2;
-      offset.x = Math.max(-maxX, Math.min(maxX, offset.x));
-      offset.y = Math.max(-maxY, Math.min(maxY, offset.y));
+      const box = previewBox.getBoundingClientRect();
+      const extraW = (box.width  * (SCALE - 1)) / 2;
+      const extraH = (box.height * (SCALE - 1)) / 2;
+      offset.x = Math.max(-extraW, Math.min(extraW, offset.x));
+      offset.y = Math.max(-extraH, Math.min(extraH, offset.y));
     }
-    previewImg.addEventListener('click', (e)=>{
+
+    // Click to toggle zoom (centered first)
+    previewImg.addEventListener('click', ()=>{
       if(!zoomed){
         zoomed = true;
-        const r = previewImg.getBoundingClientRect();
-        const cx = e.clientX - r.left - r.width/2;
-        const cy = e.clientY - r.top  - r.height/2;
-        offset.x = -cx * (SCALE - 1) / SCALE;
-        offset.y = -cy * (SCALE - 1) / SCALE;
+        offset = { x:0, y:0 }; // center so the whole item is visible initially
         previewImg.classList.add('zoomed');
         previewImg.style.cursor = 'grab';
         clampPan(); applyTransform();
@@ -762,6 +763,8 @@
         resetZoom();
       }
     });
+
+    // Drag to pan while zoomed
     previewImg.addEventListener('mousedown', (e)=>{
       if(!zoomed) return;
       dragging = true;
@@ -780,6 +783,8 @@
       dragging = false;
       previewImg.style.cursor = 'grab';
     });
+
+    // Touch support
     previewImg.addEventListener('touchstart', (e)=>{
       if(!zoomed) return;
       const t = e.touches[0];
