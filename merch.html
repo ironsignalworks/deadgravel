@@ -16,7 +16,7 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#0b0f12" />
 
-  <!-- SOCIAL PREVIEW (match other pages) -->
+  <!-- Social -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Dead Gravel">
   <meta property="og:title" content="Dead Gravel — Merch">
@@ -27,24 +27,32 @@
   <meta property="og:image:alt" content="Dead Gravel — promo thumbnail">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@DeadGravel77">
   <meta name="twitter:creator" content="@DeadGravel77">
   <meta name="twitter:title" content="Dead Gravel — Merch">
-  <meta name="twitter:description" content="Official Dead Gravel merchandise. Shirts, posters & more.">
+  <meta name="twitter:description" content="Official Dead Gravel merchandise. Shirts, posters & more">
   <meta name="twitter:image" content="https://deadgravel.com/thumb.jpg">
 
-  <!-- Perf: fonts & bg -->
+  <!-- Perf -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="bg4.webp" imagesizes="100vw">
-  <!-- Optional: speed up PayPal SDK -->
-  <link rel="preconnect" href="https://www.paypal.com" crossorigin>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- EmailJS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // EmailJS keys/IDs
+    const EMAILJS_PUBLIC_KEY = "h6bYFekvxZKkFmv63";
+    const EMAILJS_SERVICE_ID = "service_6rj9urt";
+    const EMAILJS_TEMPLATE_TO_SELLER = "template_seller"; // sends only to you pre-checkout
+    document.addEventListener('DOMContentLoaded', () => {
+      try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e){ console.error('EmailJS init failed', e); }
+    });
+  </script>
 
   <style>
     :root{
@@ -55,126 +63,78 @@
       --maxw:1200px;
       --safe-top: env(safe-area-inset-top, 0px);
     }
-
     *{ box-sizing:border-box }
     html,body{ height:100% }
-    html{
-      scroll-behavior:smooth;
-      -webkit-text-size-adjust:100%;
-      text-size-adjust:100%;
-      overflow-x:hidden;
-    }
-
+    html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; overflow-x:hidden; }
     body{
       margin:0;
       font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
       color:var(--ink);
       background:var(--bg-dark) url('bg4.webp') center / cover no-repeat fixed;
     }
-    @media (max-width: 900px){
-      body{ background-attachment: scroll; }
-    }
+    @media (max-width:900px){ body{ background-attachment:scroll; } }
 
-    /* Overlay */
-    .bg-shade{
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      opacity: 0; transition: opacity .12s linear;
-      background:
-        radial-gradient(120% 120% at 50% 20%, rgba(0,0,0,.0) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.6) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,.0) 0%, rgba(0,0,0,.45) 100%);
-    }
+    .bg-shade{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0; transition:opacity .12s linear;
+      background: radial-gradient(120% 120% at 50% 20%, rgba(0,0,0,.0) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.6) 100%),
+                  linear-gradient(to bottom, rgba(0,0,0,.0) 0%, rgba(0,0,0,.45) 100%); }
     main{ position:relative; z-index:1; }
 
-    /* Desktop/Tablet Nav */
+    /* Nav */
     .top-links{
       position:fixed; top: calc(8px + var(--safe-top)); left:0; right:0;
-      display:flex; gap:28px; justify-content:center;
-      padding-inline:12px;
-      z-index:10000;
-      transition:transform .28s ease, opacity .28s ease;
-      will-change:transform, opacity;
-      pointer-events:auto;
+      display:flex; gap:28px; justify-content:center; padding-inline:12px;
+      z-index:10000; transition:transform .28s ease, opacity .28s ease;
     }
     .top-links.hide{ transform:translateY(-140%); opacity:0; }
-    .top-links a,
-    .top-links a:link,
-    .top-links a:visited{
-      color:var(--ink) !important;
-      text-decoration:none;
-      font-family:"Six Caps",sans-serif;
-      letter-spacing:.16em; text-transform:uppercase;
-      font-size:clamp(1.5rem, 4vw, 2.4rem);
-      line-height:1;
-      padding:.25rem .35rem;
-      border-radius:.25rem;
-      opacity:.95; transition:color .2s ease, opacity .2s ease, background .2s ease;
+    .top-links a{
+      color:var(--ink) !important; text-decoration:none;
+      font-family:"Six Caps",sans-serif; letter-spacing:.16em; text-transform:uppercase;
+      font-size:clamp(1.5rem,4vw,2.4rem); line-height:1;
+      padding:.25rem .35rem; border-radius:.25rem; opacity:.95;
+      transition:color .2s ease, opacity .2s ease, background .2s ease;
     }
-    .top-links a:hover,
-    .top-links a:focus,
-    .top-links a:focus-visible{
-      color:var(--brand-blue) !important;
-      background:transparent; opacity:1; outline:none;
-    }
-    .top-links a[aria-current="page"]{ color:var(--brand-blue) !important; }
+    .top-links a:hover{ color:var(--brand-blue) !important; }
 
-    /* Hamburger & Mobile menu */
     .hamburger{ display:none; }
     .mobile-menu{ display:none; }
 
     @media (max-width:640px){
       .top-links{ display:none; }
-
       .hamburger{
-        position:fixed; top: calc(10px + var(--safe-top)); right: 10px;
-        z-index: 10010; display: inline-flex; align-items: center; justify-content: center;
-        width: 44px; height: 44px; border-radius: 10px;
-        border: 1px solid #ffffff22;
-        background: rgba(10,10,10,.55);
-        -webkit-backdrop-filter: blur(6px) saturate(140%);
-        backdrop-filter: blur(6px) saturate(140%);
-        color: var(--ink); cursor: pointer;
+        position:fixed; top: calc(10px + var(--safe-top)); right:10px; z-index:10010;
+        display:inline-flex; align-items:center; justify-content:center;
+        width:44px; height:44px; border-radius:10px; border:1px solid #ffffff22;
+        background:rgba(10,10,10,.55);
       }
-      .hamburger:focus-visible{ outline:2px solid var(--brand-blue); outline-offset:2px; }
-      .hamburger svg{ width: 26px; height: 26px; }
-
+      .hamburger:focus-visible{ outline:2px solid #3939f1; outline-offset:2px; }
+      .hamburger svg{ width:26px; height:26px; }
       .mobile-menu{
-        position: fixed; top: 0; left: 0; right: 0;
-        padding-top: calc(14px + var(--safe-top)); padding-bottom: 14px;
-        z-index: 10005; display: grid; gap: 10px; justify-items: center;
-        background: rgba(10,10,10,.78);
-        -webkit-backdrop-filter: blur(10px) saturate(150%);
-        backdrop-filter: blur(10px) saturate(150%);
-        border-bottom: 1px solid #ffffff22;
-        transform: translateY(-120%); opacity: 0; transition: transform .24s ease, opacity .24s ease;
+        position:fixed; top:0; left:0; right:0;
+        padding-top: calc(14px + var(--safe-top)); padding-bottom:14px;
+        z-index:10005; display:grid; gap:10px; justify-items:center;
+        background: rgba(10,10,10,.78); -webkit-backdrop-filter: blur(10px) saturate(150%); backdrop-filter: blur(10px) saturate(150%);
+        border-bottom:1px solid #ffffff22;
+        transform:translateY(-120%); opacity:0; transition:transform .24s ease, opacity .24s ease;
       }
-      .mobile-menu.open{ transform: translateY(0); opacity: 1; }
+      .mobile-menu.open{ transform:translateY(0); opacity:1; }
       .mobile-menu[hidden]{ display:none !important; }
-
       .mobile-menu a{
         color: var(--ink); text-decoration: none;
         font-family:"Six Caps",sans-serif; letter-spacing:.16em; text-transform:uppercase;
-        font-size: clamp(1.25rem, 6vw, 1.8rem); padding: .4rem .6rem; border-radius: .35rem;
+        font-size: clamp(1.25rem,6vw,1.8rem); padding:.4rem .6rem; border-radius:.35rem;
       }
-
-      .top-pad{ height: 90px; }
+      .top-pad{ height:90px; }
     }
-
     .top-pad{ height:56px; }
 
     /* Sections */
-    section{
-      min-height:auto; display:grid; place-items:center; text-align:center;
-      padding:96px 20px 72px; position:relative; isolation:isolate;
-    }
+    section{ display:grid; place-items:center; text-align:center; padding:96px 20px 72px; position:relative; }
     .section-inner{ width:min(100%, var(--maxw)); }
     .backdrop-none{ backdrop-filter:none !important; }
 
-    h2{ font-family:"Gloock",serif; font-weight:400; font-size:clamp(2rem, 4vw, 3.2rem); margin:0 0 16px; }
+    h2{ font-family:"Gloock",serif; font-weight:400; font-size:clamp(2rem,4vw,3.2rem); margin:0 0 16px; }
     .brand{ color: var(--brand-blue); }
-    .kicker{
-      font-family:"Six Caps", sans-serif; letter-spacing:.16em; text-transform:uppercase;
-      font-size:clamp(1.7rem, 2.4vw, 1.4rem); color:var(--ink-dim); margin:0 0 10px;
-    }
+    .kicker{ font-family:"Six Caps", sans-serif; letter-spacing:.16em; text-transform:uppercase; font-size:clamp(1.7rem,2.4vw,1.4rem); color:var(--ink-dim); margin:0 0 10px; }
     .rule{ width:72px; height:2px; background:#ffffff30; margin:10px 0 20px; }
 
     /* Merch grid */
@@ -194,90 +154,118 @@
     .product-card::before{ top:8px; left:8px; border-right:none; border-bottom:none; }
     .product-card::after{ bottom:8px; right:8px; border-left:none; border-top:none; }
     .product-media{
-      width:100%; height:auto; aspect-ratio:1/1; object-fit:cover;
-      border-radius:12px; border:1px solid #ffffff22; display:block; margin-bottom:12px;
+      width:100%; aspect-ratio:1/1; object-fit:cover;
+      border-radius:12px; border:1px solid #ffffff22; display:block; margin-bottom:12px; cursor:pointer;
     }
     .product-title{ font-weight:700; font-size:1.1rem; margin:0 0 4px; color:var(--ink); }
     .product-desc{ color:var(--ink-dim); font-size:.98rem; margin:0 0 10px; }
     .product-price{ color:#fff; font-weight:700; margin:0 0 12px; }
 
-    .btn-row{ display:flex; flex-wrap:wrap; gap:10px; }
+    .btn-row{ display:grid; grid-template-columns: 1fr; gap:10px; }
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      cursor:pointer; padding:12px 14px; min-height:44px;
+      cursor:pointer; padding:12px 14px; min-height:44px; width:100%;
       border-radius:999px; border:1px solid #ffffff30;
       background:#0e141d; color:var(--ink); text-decoration:none;
-      font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:.8rem;
+      font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:.9rem;
       transition:transform .15s ease, box-shadow .15s ease, color .2s ease, border-color .2s ease;
     }
     .btn:hover{ box-shadow:0 6px 24px #0008; transform:translateY(-1px); }
-    .btn.btn-outline{ background:transparent; border-color:#ffffff40; }
-    .btn.btn-outline:hover{ border-color:#3939f1; color:#3939f1; }
+    .btn.btn-primary{ border-color:#5a67f3aa; }
+    .btn.btn-primary:hover{ border-color:#3939f1; color:#eaeaff; }
 
-    /* PayPal button holder */
-    .paypal-holder{ width:100%; margin-top:8px; }
-    .paypal-holder > div{ max-width: 320px; }
+    /* Inputs (size) */
+    .ship-input{
+      background:#0e141d; color:var(--ink); border:1px solid #ffffff2a; border-radius:10px;
+      padding:10px 12px; font:inherit; outline:none; width:100%;
+    }
+    .ship-input:focus{ border-color:#3939f1; box-shadow:0 0 0 3px #3939f124; }
+    .help-note{ color:var(--ink-dim); font-size:.85rem; margin-top:4px; }
+    .oos{ opacity:.6; }
 
-    /* Gelato modal */
-    .gelato-modal{
-      position:fixed; inset:0; z-index:20000; display:none;
-      align-items:center; justify-content:center;
-      background:rgba(0,0,0,.6); backdrop-filter: blur(4px) saturate(120%);
-      padding:20px;
+    /* Inline swatches */
+    .color-inline{ margin:6px 0 4px; }
+    .color-label-inline{ display:block; font-weight:700; margin-bottom:6px; color:var(--ink); }
+    .swatch-row-inline{ display:flex; flex-wrap:wrap; gap:8px; }
+    .swatch-btn{
+      display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+      padding:8px 12px; border-radius:999px; border:1px solid #ffffff2a; background:#0e141d; color:var(--ink);
+      font-weight:700; letter-spacing:.02em;
     }
-    .gelato-modal.open{ display:flex; }
-    .gelato-dialog{
-      width:min(100%, 980px); height:min(85vh, 760px);
-      background:#0a0f14; border:1px solid #ffffff22; border-radius:16px;
-      box-shadow:0 18px 60px #000c; position:relative; overflow:hidden;
-      display:grid; grid-template-rows: 48px 1fr;
+    .swatch-btn[data-selected="true"]{ border-color:#3939f1; box-shadow:0 0 0 3px #3939f124; }
+
+    /* Modal (swatches + zoom) — fixed height & scroll */
+    .modal{
+      position:fixed; inset:0; z-index:20000;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(0,0,0,.6); backdrop-filter: blur(6px) saturate(130%);
+      padding:12px;
     }
-    .gelato-header{
-      display:flex; align-items:center; justify-content:space-between;
+    .modal.open{ display:flex; }
+
+    .modal-dialog{
+      width:min(100%, 820px);
+      max-height: min(92dvh, 760px);
+      background:#0b0f16; border:1px solid #ffffff22; border-radius:16px;
+      box-shadow:0 20px 60px #000c; overflow:hidden;
+      display:grid; grid-template-rows:auto 1fr auto;
+    }
+
+    .modal-header{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
       padding:10px 12px; border-bottom:1px solid #ffffff22;
-      color:var(--ink); font-weight:700; letter-spacing:.06em; text-transform:uppercase;
-      background:linear-gradient(180deg, #0b0f16, #0b0f16cc);
+      background:linear-gradient(180deg,#0c1118,#0b0f16);
     }
-    .gelato-close{
-      appearance:none; border:1px solid #ffffff33; background:#0e141d; color:var(--ink);
-      border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:700;
-    }
-    .gelato-frame{ width:100%; height:100%; border:0; background:#111; }
+    .modal-title{ font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+    .modal-close{ appearance:none; border:1px solid #ffffff33; background:#0e141d; color:var(--ink);
+      border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:700; }
 
-    /* Payment badges layout */
-    .pay-methods {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem .75rem;
-      justify-content: center;
-      align-items: center;
-      margin-top: .5rem;
-      padding: 0 .5rem;
+    .modal-body{
+      overflow:auto;
+      padding:14px;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:14px;
+      align-items:start;
     }
-    .pay-badge { width: 96px; height: 30px; flex: 0 0 auto; }
-    .pay-badge .badge-bg { fill: currentColor; opacity: 0.08; }
-    .pay-badge .badge-text {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      font-size: 12px; font-weight: 600; fill: currentColor;
+
+    .modal-preview{
+      position:relative; overflow:hidden; border-radius:12px; border:1px solid #ffffff22;
+      max-height: 58dvh;
     }
-    .pay-methods { color: inherit; opacity: 0.9; }
-    .pay-badge { transition: transform .12s ease, opacity .12s ease; }
-    .pay-badge:where(:hover,:focus) { transform: translateY(-1px); opacity: 1; outline: none; }
-    @media (max-width: 480px) {
-      .pay-badge { width: 84px; height: 28px; }
-      .pay-methods { gap: .4rem .5rem; }
+    .modal-preview img{
+      width:100%; height:100%; object-fit:contain; display:block;
+      aspect-ratio:auto;
+      cursor: zoom-in; transform-origin: 0 0; user-select:none;
     }
-    @media (prefers-contrast: more) {
-      .pay-badge .badge-bg { opacity: 0.16; }
-      .pay-badge .badge-text { font-weight: 700; }
+    .modal-preview img.zoomed{ cursor: grab; }
+
+    .color-group{ text-align:left; }
+    .color-label{ font-weight:700; margin-bottom:8px; display:block; color:var(--ink); }
+    .swatch-row{ display:flex; flex-wrap:wrap; gap:8px; }
+    .swatch{ display:inline-flex; align-items:center; gap:8px; cursor:pointer; padding:8px 12px;
+      border-radius:999px; border:1px solid #ffffff2a; background:#0e141d; color:var(--ink);
+      font-weight:700; letter-spacing:.02em; }
+    .swatch[data-selected="true"]{ border-color:#3939f1; box-shadow:0 0 0 3px #3939f124; }
+
+    .modal-footer{
+      display:flex; justify-content:flex-end; gap:10px; padding:10px 12px; border-top:1px solid #ffffff22;
+    }
+    .btn-secondary{ border-color:#ffffff2a; background:#0e141d; }
+    .btn-secondary:hover{ border-color:#777; }
+
+    @media (max-width:760px){
+      .modal-body{ grid-template-columns: 1fr; gap:12px; padding:12px; }
+      .modal-preview{ max-height: 66dvh; }
     }
 
     /* Gravilhas */
     #gravilhas .section-inner{ backdrop-filter:none !important; }
     .gravilhas{
       width: clamp(160px, 18vw, 260px);
-      height:auto; display:block; margin: 6px auto 0;
+      height: auto;
+      display:block;
+      margin: 6px auto 0;
       border:none; box-shadow:none; border-radius:0; filter:none; opacity:.95;
+      max-width: 100%;
     }
     .link-wrap { position: relative; }
     .full-link { position: absolute; inset: 0; display: block; }
@@ -298,19 +286,16 @@
   </style>
 </head>
 <body>
-  <!-- Overlay -->
   <div class="bg-shade" id="bgShade" aria-hidden="true"></div>
 
-  <!-- DESKTOP/TABLET NAV -->
   <nav class="top-links" id="topLinks" aria-label="Primary">
     <a href="index.html">Home</a>
     <a href="index.html#shows">Shows</a>
     <a href="bio.html">Bio</a>
     <a href="merch.html" aria-current="page">Merch</a>
-    <a href="mailto:deadgravell77@gmail.com">Contact</a>
+    <a href="mailto:deadgravel77@gmail.com">Contact</a>
   </nav>
 
-  <!-- MOBILE: Hamburger + panel -->
   <button class="hamburger" id="menuBtn" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -323,13 +308,13 @@
     <a href="index.html#shows">Shows</a>
     <a href="bio.html">Bio</a>
     <a href="merch.html" aria-current="page">Merch</a>
-    <a href="mailto:deadgravell77@gmail.com">Contact</a>
+    <a href="mailto:deadgravel77@gmail.com">Contact</a>
   </div>
 
   <main>
     <div class="top-pad" aria-hidden="true"></div>
 
-    <!-- MERCH HEADER -->
+    <!-- Header -->
     <section id="header">
       <div class="section-inner backdrop-none">
         <div class="kicker">Official Store</div>
@@ -337,111 +322,108 @@
         <div class="rule"></div>
 
         <p class="product-desc" style="text-align:center; margin-inline:auto; max-width:60ch;">
-          All items are made to order to reduce waste and our carbon footprint. Fulfilled globally via <strong>Gelato</strong>.
-          Pay with <strong>Stripe</strong> (cards, Apple&nbsp;Pay, Google&nbsp;Pay), <strong>MB&nbsp;WAY</strong>, <strong>PayPal</strong>, and other local methods.
+          Welcome to the <strong>Dead Gravel</strong> store. Prices include flat-rate EU shipping. For shipping outside the EU, <a href="mailto:deadgravel77@gmail.com">email us</a>.
+          Check out with <strong>Stripe</strong> (cards, Apple&nbsp;Pay, Google&nbsp;Pay, <strong>MB&nbsp;WAY</strong>) or <strong>PayPal</strong>.
         </p>
-
-        <!-- Payment methods (inline SVG) -->
-        <div class="pay-methods" aria-label="Accepted payment methods">
-          <!-- Stripe -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="Stripe">
-            <title>Stripe</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">Stripe</text>
-          </svg>
-          <!-- MB WAY -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="MB WAY">
-            <title>MB WAY</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">MB&nbsp;WAY</text>
-          </svg>
-          <!-- PayPal -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="PayPal">
-            <title>PayPal</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">PayPal</text>
-          </svg>
-          <!-- Visa -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="Visa">
-            <title>Visa</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">Visa</text>
-          </svg>
-          <!-- Mastercard -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="Mastercard">
-            <title>Mastercard</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">Mastercard</text>
-          </svg>
-          <!-- Apple Pay -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="Apple Pay">
-            <title>Apple Pay</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">Apple&nbsp;Pay</text>
-          </svg>
-          <!-- Google Pay -->
-          <svg class="pay-badge" viewBox="0 0 120 36" role="img" aria-label="Google Pay">
-            <title>Google Pay</title>
-            <rect x="0" y="0" width="120" height="36" rx="6" class="badge-bg"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="badge-text">Google&nbsp;Pay</text>
-          </svg>
-        </div>
       </div>
     </section>
 
-    <!-- MERCH GRID -->
+    <!-- Merch -->
     <section id="merch">
       <div class="section-inner grid-merch">
-        <!-- Product 1 -->
+
+        <!-- Product 1: Dustborn Shirt (Yellow default) -->
         <article class="product-card"
-                 data-id="tee-mad"
-                 data-name="Band Logo Shirt"
+                 data-id="tee-dustborn"
+                 data-name="Dustborn Shirt"
                  data-price="21.99"
                  data-currency="EUR"
-                 data-gelato-url="https://example.gelato.com/product/tee-mutually-assured-drip">
-          <img src="merch1.jpg" alt="Band Logo Shirt" class="product-media" loading="lazy" decoding="async">
-          <h3 class="product-title">Band Logo Shirt</h3>
+                 data-sizes="S:12,M:8,L:0,XL:6,XXL:2"
+                 data-colors="Yellow:merch1-yellow.jpg,Black:merch1-black.jpg,White:merch1-white.jpg,Red:merch1-red.jpg"
+                 data-default-color="Yellow"
+                 data-selected-color="">
+          <img src="merch1-yellow.jpg" alt="Dustborn Shirt — Yellow" class="product-media" loading="lazy" decoding="async">
+          <h3 class="product-title">Dustborn Shirt</h3>
           <p class="product-desc">Premium cotton, unisex. Sizes S–XXL.</p>
           <div class="product-price">€21.99</div>
-          <div class="btn-row">
-            <button class="btn" data-action="gelato" type="button">Customize &amp; Order (Gelato)</button>
+
+          <!-- Size -->
+          <div class="size-slot"></div>
+
+          <!-- Inline swatches -->
+          <div class="color-inline">
+            <span class="color-label-inline">Color</span>
+            <div class="swatch-row-inline"></div>
+            <div class="help-note">Click a color or tap the image to open the preview.</div>
           </div>
-          <div class="paypal-holder" id="pp-tee-mad"></div>
+
+          <div class="btn-row">
+            <a class="btn btn-primary checkout-link"
+               href="https://buy.stripe.com/dRm28j59dbKCdSF4wI8EM00"
+               target="_blank" rel="noopener">Checkout</a>
+          </div>
         </article>
 
-        <!-- Product 2 -->
+        <!-- Product 2: Totebag (Natural default, one size) -->
         <article class="product-card"
-                 data-id="ls-bunker"
-                 data-name="Girlie Band Shirt"
-                 data-price="21.99"
+                 data-id="totebag-classic"
+                 data-name="Totebag"
+                 data-price="14.99"
                  data-currency="EUR"
-                 data-gelato-url="https://example.gelato.com/product/longsleeve-bunker-syndrome">
-          <img src="merch2.jpg" alt="Girlie Band Shirt" class="product-media" loading="lazy" decoding="async">
-          <h3 class="product-title">Girlie Band Shirt</h3>
-          <p class="product-desc">Soft cotton, tapered fit. Sizes S–XXL.</p>
-          <div class="product-price">€21.99</div>
-          <div class="btn-row">
-            <button class="btn" data-action="gelato" type="button">Customize &amp; Order (Gelato)</button>
+                 data-sizes="One Size:25"
+                 data-colors="Natural:merch2-white.jpg,Black:merch2-black.jpg"
+                 data-default-color="Natural"
+                 data-selected-color="">
+          <img src="merch2-white.jpg" alt="Totebag — Natural" class="product-media" loading="lazy" decoding="async">
+          <h3 class="product-title">Totebag</h3>
+          <p class="product-desc">Sturdy cotton tote. One size.</p>
+          <div class="product-price">€14.99</div>
+
+          <div class="size-slot"></div>
+
+          <div class="color-inline">
+            <span class="color-label-inline">Color</span>
+            <div class="swatch-row-inline"></div>
+            <div class="help-note">Click a color or tap the image to open the preview.</div>
           </div>
-          <div class="paypal-holder" id="pp-ls-bunker"></div>
+
+          <div class="btn-row">
+            <a class="btn btn-primary checkout-link"
+               href="https://buy.stripe.com/dRm28j59dbKCdSF4wI8EM00"
+               target="_blank" rel="noopener">Checkout</a>
+          </div>
         </article>
 
-        <!-- Product 3 -->
+        <!-- Product 3: Longsleeve Shirt (Black default) -->
         <article class="product-card"
-                 data-id="poster-a2"
+                 data-id="tee-longsleeve"
                  data-name="Longsleeve Shirt"
                  data-price="29.99"
                  data-currency="EUR"
-                 data-gelato-url="https://example.gelato.com/product/poster-a2-dustborn">
-          <img src="merch3.jpg" alt="Longsleeve Shirt" class="product-media" loading="lazy" decoding="async">
+                 data-sizes="S:0,M:7,L:7,XL:7,XXL:1"
+                 data-colors="Black:merch3-black.jpg,Olive:merch3-olive.jpg,Navy:merch3-navy.jpg"
+                 data-default-color="Black"
+                 data-selected-color="">
+          <img src="merch3-black.jpg" alt="Longsleeve Shirt — Black" class="product-media" loading="lazy" decoding="async">
           <h3 class="product-title">Longsleeve Shirt</h3>
           <p class="product-desc">Soft heavyweight cotton, ribbed cuffs. Sizes S–XXL.</p>
           <div class="product-price">€29.99</div>
-          <div class="btn-row">
-            <button class="btn" data-action="gelato" type="button">Customize &amp; Order (Gelato)</button>
+
+          <div class="size-slot"></div>
+
+          <div class="color-inline">
+            <span class="color-label-inline">Color</span>
+            <div class="swatch-row-inline"></div>
+            <div class="help-note">Click a color or tap the image to open the preview.</div>
           </div>
-          <div class="paypal-holder" id="pp-poster-a2"></div>
+
+          <div class="btn-row">
+            <a class="btn btn-primary checkout-link"
+               href="https://buy.stripe.com/dRm28j59dbKCdSF4wI8EM00"
+               target="_blank" rel="noopener">Checkout</a>
+          </div>
         </article>
+
       </div>
     </section>
 
@@ -486,9 +468,6 @@
     </footer>
   </main>
 
-  <!-- PayPal SDK (replace PAYPAL_CLIENT_ID) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=PAYPAL_CLIENT_ID&currency=EUR" data-sdk-integration-source="button-factory" defer></script>
-
   <script>
     // Year
     (function(){
@@ -496,169 +475,403 @@
       if (y) y.textContent = new Date().getFullYear();
     })();
 
-    // Scroll effects (match site behavior)
+    // Scroll effects
     (function initScrollEffects(){
       const shade = document.getElementById('bgShade');
       const nav   = document.getElementById('topLinks');
       if (!shade || !nav) return;
-
       const mqMobileNav = window.matchMedia('(max-width: 640px)');
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
       const maxOpacity = 0.75;
       const rampPx = 220;
-
       let ticking = false;
-
       function apply(){
         const y = window.scrollY || 0;
-
-        if (!prefersReduced) {
-          const t = Math.min(1, y / rampPx);
-          shade.style.opacity = (t * maxOpacity).toFixed(3);
-        } else {
-          shade.style.opacity = y > 0 ? '0.5' : '0';
-        }
-
+        shade.style.opacity = (prefersReduced ? (y>0?'0.5':'0') : (Math.min(1,y/rampPx)*maxOpacity).toFixed(3));
         if (mqMobileNav.matches) nav.classList.remove('hide');
         else nav.classList.toggle('hide', y > 40);
-
         ticking = false;
       }
-
-      function onScroll(){
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(apply);
-        }
-      }
-
+      function onScroll(){ if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
       apply();
       window.addEventListener('scroll', onScroll, { passive:true });
       window.addEventListener('resize', apply, { passive:true });
       mqMobileNav.addEventListener?.('change', apply);
     })();
 
-    // Mobile hamburger (+ body lock)
+    // Mobile hamburger
     (function(){
       const btn  = document.getElementById('menuBtn');
       const menu = document.getElementById('mobileMenu');
       if (!btn || !menu) return;
-
-      const lock = (on) => {
-        document.body.style.overflow = on ? 'hidden' : '';
-        document.body.style.touchAction = on ? 'none' : '';
-      };
-      const open = () => {
-        menu.hidden = false;
-        void menu.offsetHeight;               // ensure transition
-        menu.classList.add('open');
-        btn.setAttribute('aria-expanded','true');
-        btn.setAttribute('aria-label','Close menu');
-        lock(true);
-      };
-      const close = () => {
-        menu.classList.remove('open');
-        btn.setAttribute('aria-expanded','false');
-        btn.setAttribute('aria-label','Open menu');
-        lock(false);
-        setTimeout(() => {
-          if (!menu.classList.contains('open')) menu.hidden = true;
-        }, 260);
-      };
-
+      const lock = (on) => { document.body.style.overflow = on ? 'hidden' : ''; };
+      const open = () => { menu.hidden = false; void menu.offsetHeight; menu.classList.add('open'); btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','Close menu'); lock(true); };
+      const close = () => { menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','Open menu'); lock(false); setTimeout(() => { if (!menu.classList.contains('open')) menu.hidden = true; }, 260); };
       btn.addEventListener('click', () => (menu.classList.contains('open') ? close() : open()));
       menu.addEventListener('click', (e) => { if (e.target.closest('a')) close(); });
       window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-      window.addEventListener('resize', () => {
-        if (!window.matchMedia('(max-width: 640px)').matches) close();
-      }, { passive:true });
+      window.addEventListener('resize', () => { if (!window.matchMedia('(max-width: 640px)').matches) close(); }, { passive:true });
     })();
 
-    // Gelato modal logic (opens product URL in iframe)
-    (function(){
-      const modal = document.createElement('div');
-      modal.className = 'gelato-modal';
-      modal.innerHTML = `
-        <div class="gelato-dialog" role="dialog" aria-modal="true" aria-label="Gelato product">
-          <div class="gelato-header">
-            <span>Gelato — Order & Customize</span>
-            <button class="gelato-close" type="button">Close</button>
-          </div>
-          <iframe class="gelato-frame" src="about:blank" title="Gelato" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-      `;
-      document.body.appendChild(modal);
+    // --- Build size dropdown (stock-aware) ---
+    function buildSizeDropdown(card){
+      const slot = card.querySelector('.size-slot');
+      if(!slot) return;
+      const raw = (card.dataset.sizes || '').trim();
+      const pairs = raw.split(',').map(s => s.trim()).filter(Boolean);
 
-      const frame = modal.querySelector('.gelato-frame');
-      const closeBtn = modal.querySelector('.gelato-close');
+      const select = document.createElement('select');
+      select.name = 'variant';
+      select.required = true;
+      select.className = 'ship-input';
+      select.setAttribute('aria-label','Choose size');
 
-      function open(url){
-        frame.src = url;
-        modal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-      function close(){
-        modal.classList.remove('open');
-        frame.src = 'about:blank';
-        document.body.style.overflow = '';
-      }
+      const ph = document.createElement('option');
+      ph.value = '';
+      ph.textContent = 'Select size';
+      ph.disabled = true;
+      ph.selected = true;
+      select.appendChild(ph);
 
-      closeBtn.addEventListener('click', close);
-      modal.addEventListener('click', (e)=>{ if (e.target === modal) close(); });
-      window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') close(); });
+      pairs.forEach(p => {
+        const [size, qtyStr] = p.split(':').map(x => x.trim());
+        const qty = Number(qtyStr);
+        if(!size) return;
+        const opt = document.createElement('option');
+        opt.value = size;
+        if(isFinite(qty)){
+          if(qty > 0){
+            opt.textContent = `${size} — ${qty} in stock`;
+          }else{
+            opt.textContent = `${size} — Out of stock`;
+            opt.disabled = true;
+            opt.className = 'oos';
+          }
+        }else{
+          opt.textContent = size;
+        }
+        select.appendChild(opt);
+      });
 
-      document.querySelectorAll('[data-action="gelato"]').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-          const card = e.target.closest('.product-card');
-          const url = card?.dataset.gelatoUrl;
-          if (url) open(url);
-          else alert('Missing Gelato product URL for this item.');
+      slot.innerHTML = '';
+      slot.appendChild(select);
+    }
+
+    // Parse color map from data attribute
+    function parseColorMap(card){
+      const map = {};
+      (card.dataset.colors || '')
+        .split(',').map(s=>s.trim()).filter(Boolean)
+        .forEach(pair=>{
+          const [label, url] = pair.split(':').map(x=>x.trim());
+          if(label && url) map[label] = url;
         });
+      return map;
+    }
+
+    // Update card image & selection
+    function updateCardImage(card, label){
+      const colors = parseColorMap(card);
+      const url = colors[label];
+      const img = card.querySelector('.product-media');
+      if(img && url){
+        img.src = url;
+        img.alt = `${card.dataset.name} — ${label}`;
+      }
+      card.dataset.selectedColor = label;
+
+      // Sync inline swatch selection state
+      const row = card.querySelector('.swatch-row-inline');
+      if(row){
+        row.querySelectorAll('.swatch-btn').forEach(btn=>{
+          const sel = btn.dataset.color === label;
+          btn.dataset.selected = sel ? 'true' : 'false';
+          btn.setAttribute('aria-pressed', sel ? 'true' : 'false');
+        });
+      }
+      // If modal open for this card, sync its swatches & preview too
+      if(modalCard === card){
+        const b = Array.from(swatchRow.children).find(el=>el.dataset.color === label);
+        if(b){
+          swatchRow.querySelectorAll('.swatch').forEach(el=>{
+            const sel = el === b;
+            el.dataset.selected = sel ? 'true' : 'false';
+            el.setAttribute('aria-pressed', sel ? 'true' : 'false');
+          });
+        }
+        previewImg.src = url;
+        previewImg.alt = `${card.dataset.name} — ${label}`;
+        resetZoom();
+      }
+    }
+
+    // Init default product image & selected color
+    function initDefaultColor(card){
+      const colors = parseColorMap(card);
+      const def = (card.dataset.defaultColor || '').trim();
+      const start = colors[def] ? def : Object.keys(colors)[0];
+      if(start){
+        card.dataset.selectedColor = start;
+        const url = colors[start];
+        const img = card.querySelector('.product-media');
+        if (img && url){
+          img.src = url;
+          img.alt = `${card.dataset.name} — ${start}`;
+        }
+      }
+    }
+
+    // Build inline swatches inside each card
+    function buildInlineSwatches(card){
+      const row = card.querySelector('.swatch-row-inline');
+      if(!row) return;
+      row.innerHTML = '';
+      const colors = parseColorMap(card);
+      const current = card.dataset.selectedColor || card.dataset.defaultColor || Object.keys(colors)[0];
+
+      Object.entries(colors).forEach(([label])=>{
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'swatch-btn';
+        b.dataset.color = label;
+        b.textContent = label;
+        b.setAttribute('aria-pressed', label === current ? 'true' : 'false');
+        b.dataset.selected = label === current ? 'true' : 'false';
+        b.addEventListener('click', ()=>{
+          updateCardImage(card, label);
+        });
+        row.appendChild(b);
+      });
+    }
+
+    // -------- Shared Color Modal (opens via thumbnail click) + Zoom/Pan --------
+    const colorModal = document.createElement('div');
+    colorModal.className = 'modal';
+    colorModal.innerHTML = `
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Choose color">
+        <div class="modal-header">
+          <span class="modal-title">Preview Colors</span>
+          <button class="modal-close" type="button">Close</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-preview"><img alt="Preview" /></div>
+          <div class="color-group">
+            <label class="color-label">Available colors</label>
+            <div class="swatch-row" id="swatchRow"></div>
+            <p class="help-note">Click image to zoom. Drag to pan while zoomed.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" id="cancelBtn">Close</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(colorModal);
+    const swatchRow = colorModal.querySelector('#swatchRow');
+    const previewImg = colorModal.querySelector('.modal-body img');
+    const closeModalBtn = colorModal.querySelector('.modal-close');
+    const cancelBtn = colorModal.querySelector('#cancelBtn');
+
+    let modalCard = null;
+
+    function openColorModal(card){
+      modalCard = card;
+      const colors = parseColorMap(card);
+      const current = card.dataset.selectedColor || card.dataset.defaultColor || Object.keys(colors)[0];
+
+      // Build swatches (modal)
+      swatchRow.innerHTML = '';
+      Object.entries(colors).forEach(([label, url])=>{
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'swatch';
+        b.dataset.color = label;
+        b.textContent = label;
+        b.setAttribute('aria-pressed','false');
+        b.addEventListener('click', ()=>{
+          updateCardImage(card, label); // syncs modal + inline swatches
+        });
+        swatchRow.appendChild(b);
+      });
+
+      // Prime current preview
+      const curUrl = colors[current];
+      previewImg.src = curUrl;
+      previewImg.alt = `${card.dataset.name} — ${current}`;
+      Array.from(swatchRow.children).forEach(el=>{
+        const sel = el.dataset.color === current;
+        el.dataset.selected = sel ? 'true' : 'false';
+        el.setAttribute('aria-pressed', sel ? 'true' : 'false');
+      });
+
+      resetZoom();
+      colorModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      colorModal.style.touchAction = 'none';
+    }
+
+    function closeColorModal(){
+      colorModal.classList.remove('open');
+      document.body.style.overflow = '';
+      colorModal.style.touchAction = '';
+      resetZoom();
+      modalCard = null;
+    }
+    closeModalBtn.addEventListener('click', closeColorModal);
+    cancelBtn.addEventListener('click', closeColorModal);
+    colorModal.addEventListener('click', (e)=>{ if (e.target === colorModal) closeColorModal(); });
+    window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && colorModal.classList.contains('open')) closeColorModal(); });
+
+    // Zoom/Pan
+    let zoomed = false;
+    let offset = { x:0, y:0 };
+    let dragging = false;
+    let dragStart = { x:0, y:0 };
+    const SCALE = 2.2;
+
+    function applyTransform(){
+      previewImg.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${zoomed ? SCALE : 1})`;
+    }
+    function resetZoom(){
+      zoomed = false; dragging = false; offset = { x:0, y:0 };
+      previewImg.classList.remove('zoomed');
+      previewImg.style.transform = 'translate(0,0) scale(1)';
+      previewImg.style.cursor = 'zoom-in';
+    }
+    function clampPan(){
+      const box = previewImg.getBoundingClientRect();
+      const extraW = box.width * (SCALE - 1) / SCALE;
+      const extraH = box.height * (SCALE - 1) / SCALE;
+      const maxX = extraW / 2;
+      const maxY = extraH / 2;
+      offset.x = Math.max(-maxX, Math.min(maxX, offset.x));
+      offset.y = Math.max(-maxY, Math.min(maxY, offset.y));
+    }
+    previewImg.addEventListener('click', (e)=>{
+      if(!zoomed){
+        zoomed = true;
+        const r = previewImg.getBoundingClientRect();
+        const cx = e.clientX - r.left - r.width/2;
+        const cy = e.clientY - r.top  - r.height/2;
+        offset.x = -cx * (SCALE - 1) / SCALE;
+        offset.y = -cy * (SCALE - 1) / SCALE;
+        previewImg.classList.add('zoomed');
+        previewImg.style.cursor = 'grab';
+        clampPan(); applyTransform();
+      }else{
+        resetZoom();
+      }
+    });
+    previewImg.addEventListener('mousedown', (e)=>{
+      if(!zoomed) return;
+      dragging = true;
+      previewImg.style.cursor = 'grabbing';
+      dragStart = { x:e.clientX - offset.x, y:e.clientY - offset.y };
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e)=>{
+      if(!dragging || !zoomed) return;
+      offset.x = e.clientX - dragStart.x;
+      offset.y = e.clientY - dragStart.y;
+      clampPan(); applyTransform();
+    });
+    window.addEventListener('mouseup', ()=>{
+      if(!zoomed) return;
+      dragging = false;
+      previewImg.style.cursor = 'grab';
+    });
+    previewImg.addEventListener('touchstart', (e)=>{
+      if(!zoomed) return;
+      const t = e.touches[0];
+      dragging = true;
+      dragStart = { x:t.clientX - offset.x, y:t.clientY - offset.y };
+    }, {passive:true});
+    previewImg.addEventListener('touchmove', (e)=>{
+      if(!dragging || !zoomed) return;
+      const t = e.touches[0];
+      offset.x = t.clientX - dragStart.x;
+      offset.y = t.clientY - dragStart.y;
+      clampPan(); applyTransform();
+    }, {passive:true});
+    previewImg.addEventListener('touchend', ()=>{ dragging = false; });
+
+    // Wire image -> open modal
+    function attachImageModal(card){
+      const img = card.querySelector('.product-media');
+      if(!img) return;
+      img.addEventListener('click', ()=> openColorModal(card));
+    }
+
+    // -------- Email helpers (seller-only pre-checkout note) --------
+    function getSelection(card){
+      const sizeSel = card.querySelector('select[name="variant"]');
+      return {
+        variant: sizeSel?.value || '',
+        color: card.dataset.selectedColor || card.dataset.defaultColor || ''
+      };
+    }
+
+    async function sendSellerEmail({card}){
+      const name  = card.dataset.name;
+      const price = card.dataset.price;
+      const currency = card.dataset.currency || 'EUR';
+      const id = card.dataset.id;
+      const { variant, color } = getSelection(card);
+
+      if(!variant || !color){
+        alert('Please choose a size and a color before checkout.');
+        throw new Error('Missing variant/color');
+      }
+
+      const orderPayload = {
+        product_id: id,
+        product_name: name,
+        price, currency,
+        variant: variant,
+        color: color,
+        order_time: new Date().toISOString(),
+        payment_method: 'Stripe Checkout (pre)'
+      };
+
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_TO_SELLER, orderPayload);
+    }
+
+    function toast(msg){
+      const el = document.createElement('div');
+      el.textContent = msg;
+      Object.assign(el.style, {
+        position:'fixed', left:'50%', top:'16px', transform:'translateX(-50%)',
+        background:'#0e141d', color:'#e8e8e8', border:'1px solid #ffffff33',
+        padding:'10px 14px', borderRadius:'999px', zIndex:999999, boxShadow:'0 12px 30px #000a'
+      });
+      document.body.appendChild(el); setTimeout(()=> el.remove(), 3400);
+    }
+
+    // Checkout handler (single button)
+    (function(){
+      document.querySelectorAll('.product-card .checkout-link').forEach(link=>{
+        link.addEventListener('click', async (e)=>{
+          const card = e.target.closest('.product-card');
+          try{
+            await sendSellerEmail({ card });
+            toast('Got it. Taking you to secure checkout…');
+          }catch(err){
+            e.preventDefault(); // stop leaving if invalid
+            console.error('Pre-checkout email failed or missing selection', err);
+            return;
+          }
+        }, { capture:true });
       });
     })();
 
-    // PayPal buttons for each product card
-    (function initPayPal(){
-      function setup(){
-        document.querySelectorAll('.product-card').forEach(card => {
-          const id = card.dataset.id;
-          const name = card.dataset.name;
-          const price = card.dataset.price;
-          const currency = card.dataset.currency || 'EUR';
-          const holderId = 'pp-' + id;
-          const holder = document.getElementById(holderId);
-          if (!holder) return;
-
-          try {
-            window.paypal.Buttons({
-              style: { layout: 'horizontal', tagline: false, height: 40, shape: 'pill' },
-              createOrder: function(data, actions) {
-                return actions.order.create({
-                  purchase_units: [{
-                    description: name,
-                    amount: { currency_code: currency, value: price }
-                  }]
-                });
-              },
-              onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                  alert('Thanks, ' + (details.payer.name?.given_name || 'friend') + '! Your order for ' + name + ' is confirmed.');
-                });
-              },
-              onError: function(err) {
-                console.error('PayPal error:', err);
-                alert('Payment error. Please try again or use the Gelato option.');
-              }
-            }).render('#' + holderId);
-          } catch (e) {
-            console.error('PayPal render failed:', e);
-          }
-        });
-      }
-
-      if (window.paypal) setup();
-      else window.addEventListener('load', () => { if (window.paypal) setup(); });
+    // Init all cards (sizes, default color, inline swatches, modal hook)
+    (function(){
+      document.querySelectorAll('.product-card').forEach(card => {
+        buildSizeDropdown(card);
+        initDefaultColor(card);
+        buildInlineSwatches(card);
+        attachImageModal(card);
+      });
     })();
   </script>
 </body>
