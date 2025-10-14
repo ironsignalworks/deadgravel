@@ -200,6 +200,10 @@
       display:none; align-items:center; justify-content:center;
       background:rgba(0,0,0,.6); backdrop-filter: blur(6px) saturate(130%);
       padding:12px;
+
+      /* mobile stability */
+      overscroll-behavior: contain;
+      touch-action: none;
     }
     .modal.open{ display:flex; }
 
@@ -209,6 +213,9 @@
       background:#0b0f16; border:1px solid #ffffff22; border-radius:16px;
       box-shadow:0 20px 60px #000c; overflow:hidden;
       display:grid; grid-template-rows:auto 1fr auto;
+
+      overscroll-behavior: contain;
+      touch-action: none;
     }
 
     .modal-header{
@@ -225,16 +232,24 @@
       padding:14px;
       display:grid; grid-template-columns: 1.2fr .8fr; gap:14px;
       align-items:start;
+
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
     }
 
     .modal-preview{
       position:relative; overflow:hidden; border-radius:12px; border:1px solid #ffffff22;
       max-height: 58dvh;
+
+      overscroll-behavior: contain;
+      touch-action: none; /* critical for mobile panning */
     }
     .modal-preview img{
       width:100%; height:100%; object-fit:contain; display:block;
       aspect-ratio:auto;
       cursor: zoom-in; transform-origin: 50% 50%; user-select:none;
+
+      touch-action: none; /* prevent scroll while panning */
     }
     .modal-preview img.zoomed{ cursor: grab; }
 
@@ -308,7 +323,7 @@
     <a href="index.html#shows">Shows</a>
     <a href="bio.html">Bio</a>
     <a href="merch.html" aria-current="page">Merch</a>
-    <a href="mailto:deadgravel77@gmail.com">Contact</a>
+    <a href="mailto:deadgravell77@gmail.com">Contact</a>
   </div>
 
   <main>
@@ -348,10 +363,8 @@
           <p class="product-desc">Premium cotton, unisex. Sizes S–XXL.</p>
           <div class="product-price">€21.99</div>
 
-          <!-- Size -->
           <div class="size-slot"></div>
 
-          <!-- Inline swatches -->
           <div class="color-inline">
             <span class="color-label-inline">Color</span>
             <div class="swatch-row-inline"></div>
@@ -672,7 +685,7 @@
     const previewImg  = colorModal.querySelector('.modal-body img');
     const closeModalBtn = colorModal.querySelector('.modal-close');
     const cancelBtn     = colorModal.querySelector('#cancelBtn');
-    const previewBox    = colorModal.querySelector('.modal-preview'); // <-- moved here (fix)
+    const previewBox    = colorModal.querySelector('.modal-preview');
 
     let modalCard = null;
 
@@ -683,7 +696,7 @@
 
       // Build swatches (modal)
       swatchRow.innerHTML = '';
-      Object.entries(colors).forEach(([label, url])=>{
+      Object.entries(colors).forEach(([label])=>{
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'swatch';
@@ -709,13 +722,11 @@
       resetZoom();
       colorModal.classList.add('open');
       document.body.style.overflow = 'hidden';
-      colorModal.style.touchAction = 'none';
     }
 
     function closeColorModal(){
       colorModal.classList.remove('open');
       document.body.style.overflow = '';
-      colorModal.style.touchAction = '';
       resetZoom();
       modalCard = null;
     }
@@ -724,25 +735,25 @@
     colorModal.addEventListener('click', (e)=>{ if (e.target === colorModal) closeColorModal(); });
     window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && colorModal.classList.contains('open')) closeColorModal(); });
 
-    // Zoom/Pan
+    // --- Zoom/Pan with Pointer Events (stable on mobile) ---
     let zoomed = false;
     let offset = { x:0, y:0 };
     let dragging = false;
     let dragStart = { x:0, y:0 };
-    const SCALE = 2; // 2x is plenty and keeps things predictable
+    let dragMoved = false; // to distinguish tap vs drag
+    const SCALE = 2;
 
     function applyTransform(){
       previewImg.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${zoomed ? SCALE : 1})`;
     }
 
     function resetZoom(){
-      zoomed = false; dragging = false; offset = { x:0, y:0 };
+      zoomed = false; dragging = false; offset = { x:0, y:0 }; dragMoved = false;
       previewImg.classList.remove('zoomed');
       previewImg.style.transform = 'translate(0,0) scale(1)';
       previewImg.style.cursor = 'zoom-in';
     }
 
-    // Clamp offsets based on the container (previewBox)
     function clampPan(){
       const box = previewBox.getBoundingClientRect();
       const extraW = (box.width  * (SCALE - 1)) / 2;
@@ -751,54 +762,66 @@
       offset.y = Math.max(-extraH, Math.min(extraH, offset.y));
     }
 
-    // Click to toggle zoom (centered first)
-    previewImg.addEventListener('click', ()=>{
+    // Toggle zoom on tap (pointerup) when there was no drag
+    function toggleZoomCentered(){
       if(!zoomed){
         zoomed = true;
-        offset = { x:0, y:0 }; // center so the whole item is visible initially
+        offset = { x:0, y:0 };
         previewImg.classList.add('zoomed');
         previewImg.style.cursor = 'grab';
         clampPan(); applyTransform();
       }else{
         resetZoom();
       }
+    }
+
+    // Pointer events for smooth mobile drag
+    previewImg.addEventListener('pointerdown', (e)=>{
+      // Allow tap to open zoom when not zoomed; dragging only when zoomed
+      if(zoomed){
+        dragging = true; dragMoved = false;
+        previewImg.setPointerCapture(e.pointerId);
+        previewImg.style.cursor = 'grabbing';
+        dragStart = { x:e.clientX - offset.x, y:e.clientY - offset.y };
+        e.preventDefault();
+      }
     });
 
-    // Drag to pan while zoomed
-    previewImg.addEventListener('mousedown', (e)=>{
-      if(!zoomed) return;
-      dragging = true;
-      previewImg.style.cursor = 'grabbing';
-      dragStart = { x:e.clientX - offset.x, y:e.clientY - offset.y };
+    previewImg.addEventListener('pointermove', (e)=>{
+      if(!dragging || !zoomed) return;
+      const nx = e.clientX - dragStart.x;
+      const ny = e.clientY - dragStart.y;
+      // small deadzone to avoid accidental “wiggle”
+      if(Math.abs(nx - offset.x) > 0.5 || Math.abs(ny - offset.y) > 0.5){
+        dragMoved = true;
+      }
+      offset.x = nx; offset.y = ny;
+      clampPan(); applyTransform();
       e.preventDefault();
     });
-    window.addEventListener('mousemove', (e)=>{
-      if(!dragging || !zoomed) return;
-      offset.x = e.clientX - dragStart.x;
-      offset.y = e.clientY - dragStart.y;
-      clampPan(); applyTransform();
-    });
-    window.addEventListener('mouseup', ()=>{
-      if(!zoomed) return;
-      dragging = false;
-      previewImg.style.cursor = 'grab';
-    });
 
-    // Touch support
-    previewImg.addEventListener('touchstart', (e)=>{
+    function endPointer(e){
       if(!zoomed) return;
-      const t = e.touches[0];
-      dragging = true;
-      dragStart = { x:t.clientX - offset.x, y:t.clientY - offset.y };
-    }, {passive:true});
-    previewImg.addEventListener('touchmove', (e)=>{
-      if(!dragging || !zoomed) return;
-      const t = e.touches[0];
-      offset.x = t.clientX - dragStart.x;
-      offset.y = t.clientY - dragStart.y;
-      clampPan(); applyTransform();
-    }, {passive:true});
-    previewImg.addEventListener('touchend', ()=>{ dragging = false; });
+      if(dragging){
+        previewImg.releasePointerCapture?.(e.pointerId);
+        previewImg.style.cursor = 'grab';
+        dragging = false;
+        // If there was no drag, treat as a tap to toggle zoom
+        if(!dragMoved){
+          toggleZoomCentered();
+        }
+      }else{
+        // Not dragging: use as tap to toggle zoom
+        toggleZoomCentered();
+      }
+    }
+    previewImg.addEventListener('pointerup', endPointer);
+    previewImg.addEventListener('pointercancel', endPointer);
+    // Also treat simple click (mouse) as toggle when not dragging
+    previewImg.addEventListener('click', (e)=>{
+      if(dragMoved) return;
+      if(!dragging) toggleZoomCentered();
+    });
 
     // Wire image -> open modal
     function attachImageModal(card){
