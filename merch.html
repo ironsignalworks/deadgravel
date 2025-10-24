@@ -52,6 +52,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e){ console.error('EmailJS init failed', e); }
     });
+
+    // 🔒 Global kill-switch: disable the store without touching product data
+    const STORE_DISABLED = true;
   </script>
 
   <style>
@@ -200,8 +203,6 @@
       display:none; align-items:center; justify-content:center;
       background:rgba(0,0,0,.6); backdrop-filter: blur(6px) saturate(130%);
       padding:12px;
-
-      /* mobile stability */
       overscroll-behavior: contain;
       touch-action: none;
     }
@@ -213,7 +214,6 @@
       background:#0b0f16; border:1px solid #ffffff22; border-radius:16px;
       box-shadow:0 20px 60px #000c; overflow:hidden;
       display:grid; grid-template-rows:auto 1fr auto;
-
       overscroll-behavior: contain;
       touch-action: none;
     }
@@ -232,7 +232,6 @@
       padding:14px;
       display:grid; grid-template-columns: 1.2fr .8fr; gap:14px;
       align-items:start;
-
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
@@ -240,7 +239,6 @@
     .modal-preview{
       position:relative; overflow:hidden; border-radius:12px; border:1px solid #ffffff22;
       max-height: 58dvh;
-
       overscroll-behavior: contain;
       touch-action: none; /* critical for mobile panning */
     }
@@ -248,7 +246,6 @@
       width:100%; height:100%; object-fit:contain; display:block;
       aspect-ratio:auto;
       cursor: zoom-in; transform-origin: 50% 50%; user-select:none;
-
       touch-action: none; /* prevent scroll while panning */
     }
     .modal-preview img.zoomed{ cursor: grab; }
@@ -298,6 +295,42 @@
       .bg-shade{ transition:none; }
       .btn, .btn:hover{ transition:none; transform:none; box-shadow:none; }
     }
+
+    /* 🔒 Disabled store styles */
+    .store-disabled .product-card::after{ /* keep corner deco */ }
+    .store-disabled .product-media,
+    .store-disabled .swatch-row-inline,
+    .store-disabled .size-slot select{
+      pointer-events:none;
+      opacity:.6;
+      filter:grayscale(25%);
+    }
+    .store-disabled .btn.btn-primary{
+      pointer-events:none;
+      cursor:not-allowed;
+      opacity:.6;
+      border-color:#ffffff22;
+    }
+    .disabled-cover{
+      position:absolute; inset:0; background:linear-gradient(180deg, #0b0f16cc, #0b0f16aa);
+      display:grid; place-items:end center; padding:12px; text-align:center;
+      pointer-events:none;
+    }
+    .disabled-chip{
+      display:inline-block; padding:8px 12px; border-radius:999px;
+      background:#161c27; border:1px solid #ffffff33; font-weight:800; letter-spacing:.06em;
+      text-transform:uppercase; color:#e8e8e8;
+    }
+    .coming-soon{
+      margin-top:-12px;
+      padding:16px;
+      border:1px solid #ffffff22;
+      background:#0b0f16cc;
+      border-radius:14px;
+      text-align:center;
+    }
+    .coming-soon strong{ color:#e8e8e8; }
+    .coming-soon .sub{ color:var(--ink-dim); margin-top:6px; }
   </style>
 </head>
 <body>
@@ -376,6 +409,8 @@
                href="https://buy.stripe.com/dRm28j59dbKCdSF4wI8EM00"
                target="_blank" rel="noopener">Checkout</a>
           </div>
+
+          <!-- overlay gets injected by JS when disabled -->
         </article>
 
         <!-- Product 2: Totebag (Natural default, one size) -->
@@ -438,6 +473,14 @@
           </div>
         </article>
 
+      </div>
+
+      <!-- 📣 Coming Soon banner (appears when store disabled) -->
+      <div id="comingSoonBanner" class="section-inner" style="margin-top:22px; display:none;">
+        <div class="coming-soon">
+          <div><strong>Merch Coming Soon</strong></div>
+          <div class="sub">We’re polishing a few things. Check back soon or <a href="mailto:deadgravel77@gmail.com">email us</a> for updates.</div>
+        </div>
       </div>
     </section>
 
@@ -651,9 +694,7 @@
         b.textContent = label;
         b.setAttribute('aria-pressed', label === current ? 'true' : 'false');
         b.dataset.selected = label === current ? 'true' : 'false';
-        b.addEventListener('click', ()=>{
-          updateCardImage(card, label);
-        });
+        b.addEventListener('click', ()=>{ updateCardImage(card, label); });
         row.appendChild(b);
       });
     }
@@ -703,9 +744,7 @@
         b.dataset.color = label;
         b.textContent = label;
         b.setAttribute('aria-pressed','false');
-        b.addEventListener('click', ()=>{
-          updateCardImage(card, label); // syncs modal + inline swatches
-        });
+        b.addEventListener('click', ()=>{ updateCardImage(card, label); });
         swatchRow.appendChild(b);
       });
 
@@ -730,6 +769,7 @@
       resetZoom();
       modalCard = null;
     }
+    closeColorModalBtn = closeColorModal; // keeps reference for disabled mode
     closeModalBtn.addEventListener('click', closeColorModal);
     cancelBtn.addEventListener('click', closeColorModal);
     colorModal.addEventListener('click', (e)=>{ if (e.target === colorModal) closeColorModal(); });
@@ -762,7 +802,6 @@
       offset.y = Math.max(-extraH, Math.min(extraH, offset.y));
     }
 
-    // Toggle zoom on tap (pointerup) when there was no drag
     function toggleZoomCentered(){
       if(!zoomed){
         zoomed = true;
@@ -775,9 +814,7 @@
       }
     }
 
-    // Pointer events for smooth mobile drag
     previewImg.addEventListener('pointerdown', (e)=>{
-      // Allow tap to open zoom when not zoomed; dragging only when zoomed
       if(zoomed){
         dragging = true; dragMoved = false;
         previewImg.setPointerCapture(e.pointerId);
@@ -791,10 +828,7 @@
       if(!dragging || !zoomed) return;
       const nx = e.clientX - dragStart.x;
       const ny = e.clientY - dragStart.y;
-      // small deadzone to avoid accidental “wiggle”
-      if(Math.abs(nx - offset.x) > 0.5 || Math.abs(ny - offset.y) > 0.5){
-        dragMoved = true;
-      }
+      if(Math.abs(nx - offset.x) > 0.5 || Math.abs(ny - offset.y) > 0.5){ dragMoved = true; }
       offset.x = nx; offset.y = ny;
       clampPan(); applyTransform();
       e.preventDefault();
@@ -806,24 +840,15 @@
         previewImg.releasePointerCapture?.(e.pointerId);
         previewImg.style.cursor = 'grab';
         dragging = false;
-        // If there was no drag, treat as a tap to toggle zoom
-        if(!dragMoved){
-          toggleZoomCentered();
-        }
+        if(!dragMoved){ toggleZoomCentered(); }
       }else{
-        // Not dragging: use as tap to toggle zoom
         toggleZoomCentered();
       }
     }
     previewImg.addEventListener('pointerup', endPointer);
     previewImg.addEventListener('pointercancel', endPointer);
-    // Also treat simple click (mouse) as toggle when not dragging
-    previewImg.addEventListener('click', (e)=>{
-      if(dragMoved) return;
-      if(!dragging) toggleZoomCentered();
-    });
+    previewImg.addEventListener('click', (e)=>{ if(!dragMoved && !dragging) toggleZoomCentered(); });
 
-    // Wire image -> open modal
     function attachImageModal(card){
       const img = card.querySelector('.product-media');
       if(!img) return;
@@ -900,6 +925,48 @@
         buildInlineSwatches(card);
         attachImageModal(card);
       });
+    })();
+
+    // 🔒 Apply "store paused" mode (no navigation, no modal, clear CTAs)
+    (function(){
+      if(!STORE_DISABLED) return;
+      document.body.classList.add('store-disabled');
+
+      // Turn on banner
+      const banner = document.getElementById('comingSoonBanner');
+      if (banner) banner.style.display = 'block';
+
+      // For each product, add a faint overlay chip and neutralize interactions
+      document.querySelectorAll('.product-card').forEach(card=>{
+        // overlay chip
+        const overlay = document.createElement('div');
+        overlay.className = 'disabled-cover';
+        overlay.setAttribute('aria-hidden','true');
+        overlay.innerHTML = `<span class="disabled-chip">Coming Soon</span>`;
+        card.appendChild(overlay);
+
+        // disable selects & swatches for a11y
+        card.querySelectorAll('select, button.swatch-btn, .swatch, .product-media').forEach(el=>{
+          el.setAttribute('tabindex','-1');
+          el.setAttribute('aria-disabled','true');
+        });
+
+        // replace checkout link text and block navigation
+        const link = card.querySelector('.checkout-link');
+        if(link){
+          link.textContent = 'Coming Soon';
+          link.setAttribute('aria-disabled','true');
+          link.removeAttribute('href'); // ensure no accidental navigation
+          link.addEventListener('click', (e)=>{ e.preventDefault(); e.stopImmediatePropagation(); });
+        }
+      });
+
+      // prevent modal from ever opening
+      document.querySelectorAll('.product-media').forEach(img=>{
+        img.replaceWith(img.cloneNode(true)); // strip existing listeners
+      });
+      // if modal somehow open, close it
+      if (document.querySelector('.modal.open')) { closeColorModal(); }
     })();
   </script>
 </body>
