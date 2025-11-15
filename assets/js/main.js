@@ -5,12 +5,9 @@ function initScrollEffects() {
 
   const mqMobile = window.matchMedia("(max-width: 640px)");
   const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const root = document.documentElement;
 
   const maxOpacity = 0.0;
   const rampPx = 220;
-  const parallaxCap = 160;
-  const parallaxSpeed = 0.26;
 
   let ticking = false;
 
@@ -24,10 +21,6 @@ function initScrollEffects() {
     } else if (shade) {
       shade.style.opacity = "0";
     }
-
-    const shouldParallax = !reducedMotion && !mqMobile.matches;
-    const shift = shouldParallax ? Math.min(parallaxCap, Math.round(y * parallaxSpeed)) : 0;
-    root.style.setProperty("--parallax-shift", `${shift}px`);
 
     if (mqMobile.matches) {
       nav.classList.remove("hide");

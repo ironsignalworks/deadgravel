@@ -5,7 +5,6 @@
   --brand-blue: #3939f1;
   --maxw: 1200px;
   --safe-top: env(safe-area-inset-top, 0px);
-  --parallax-shift: 0px;
 }
 
 * {
@@ -32,7 +31,7 @@ body {
   color: var(--ink);
   background-color: var(--bg-dark);
   background-image: url("/assets/images/bg1.jpg");
-  background-position: center calc(50% + var(--parallax-shift));
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
