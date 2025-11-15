@@ -10,6 +10,7 @@ function initScrollEffects() {
   const rampPx = 220;
 
   let ticking = false;
+  let navHidden = nav.classList.contains("hide");
 
   function apply() {
     const y = window.scrollY || 0;
@@ -23,13 +24,15 @@ function initScrollEffects() {
     }
 
     if (mqMobile.matches) {
-      if (nav.classList.contains("hide")) {
+      if (navHidden) {
         nav.classList.remove("hide");
+        navHidden = false;
       }
     } else {
       const shouldHide = y > 40;
-      if (nav.classList.contains("hide") !== shouldHide) {
+      if (navHidden !== shouldHide) {
         nav.classList.toggle("hide", shouldHide);
+        navHidden = shouldHide;
       }
     }
 
