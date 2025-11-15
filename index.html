@@ -157,7 +157,10 @@
     <section id="demo" class="two-col">
       <div class="section-inner grid2">
         <div class="col-media">
-          <img src="/assets/images/demo1.jpg" alt="Dead Gravel Demo Cover" class="media" width="1200" height="800" loading="lazy" decoding="async" />
+          <picture>
+            <source media="(max-width: 900px)" srcset="/assets/images/demo1m.jpg">
+            <img src="/assets/images/demo1.jpg" alt="Dead Gravel Demo Cover" class="media" width="1200" height="800" loading="lazy" decoding="async" />
+          </picture>
         </div>
         <div class="col-copy">
           <h2>New Demo Out Now</h2>
@@ -177,14 +180,10 @@
           <p class="quote">“Ruin My Fun,” the opening track from the demo <em>Dustborn</em>, kicks down the door with a sneer and a smile. Loud, loose, and unapologetically alive.</p>
         </div>
 
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU"
-            title="Dead Gravel – Ruin My Fun"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
+        <div class="video-wrap" data-video-src="https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU">
+          <button class="video-load-btn" type="button" aria-label="Play Ruin My Fun video">
+            <span>Play Video</span>
+          </button>
         </div>
       </div>
     </section>

@@ -23,9 +23,14 @@ function initScrollEffects() {
     }
 
     if (mqMobile.matches) {
-      nav.classList.remove("hide");
+      if (nav.classList.contains("hide")) {
+        nav.classList.remove("hide");
+      }
     } else {
-      nav.classList.toggle("hide", y > 40);
+      const shouldHide = y > 40;
+      if (nav.classList.contains("hide") !== shouldHide) {
+        nav.classList.toggle("hide", shouldHide);
+      }
     }
 
     ticking = false;
@@ -122,6 +127,27 @@ function initMobileMenu() {
   );
 }
 
+function initLazyVideo() {
+  const videoWrap = document.querySelector(".video-wrap");
+  if (!videoWrap) return;
+
+  const button = videoWrap.querySelector(".video-load-btn");
+  const src = videoWrap.dataset.videoSrc;
+  if (!button || !src) return;
+
+  button.addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = src;
+    iframe.title = "Dead Gravel – Ruin My Fun";
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    iframe.loading = "lazy";
+    videoWrap.appendChild(iframe);
+    button.remove();
+  });
+}
+
 function setFooterYear() {
   const yearEl = document.getElementById("year");
   if (!yearEl) return;
@@ -133,4 +159,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initLogoFade();
   initMobileMenu();
   setFooterYear();
+  initLazyVideo();
 });
