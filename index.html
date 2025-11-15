@@ -9,7 +9,7 @@
   <meta name="description" content="Dead Gravel — Official site" />
 
   <!-- Icons -->
-<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/icons/favicon-32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="/icons/favicon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -24,8 +24,8 @@
 <meta property="og:url" content="https://deadgravel.com/">
 
 <!-- Use JPG primary; keep WebP as optional -->
-<meta property="og:image" content="https://deadgravel.com/thumb.jpg">
-<meta property="og:image:secure_url" content="https://deadgravel.com/thumb.jpg">
+<meta property="og:image" content="https://deadgravel.com/assets/images/thumb.jpg">
+<meta property="og:image:secure_url" content="https://deadgravel.com/assets/images/thumb.jpg">
 <meta property="og:image:alt" content="Dead Gravel — promo thumbnail">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -36,19 +36,19 @@
 <meta name="twitter:creator" content="@DeadGravel77">
 <meta name="twitter:title" content="Dead Gravel — Official Site">
 <meta name="twitter:description" content="Modern western grit. New song ‘Ruin My Fun’ out now.">
-<meta name="twitter:image" content="https://deadgravel.com/thumb.jpg">
+<meta name="twitter:image" content="https://deadgravel.com/assets/images/thumb.jpg">
 
 <!-- Optional secondary WebP (some crawlers may use it) -->
-<link rel="preload" as="image" href="/thumb.webp" imagesrcset="/thumb.webp 1200w" imagesizes="1200px">
+<link rel="preload" as="image" href="/assets/images/thumb.webp" imagesrcset="/assets/images/thumb.webp 1200w" imagesizes="1200px">
 
   <!-- Preloads -->
-  <link rel="preload" as="image" href="bg1.webp" />
+  <link rel="preload" as="image" href="/assets/images/bg1.jpg" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="preload" as="style" href="style.css">
-  <link rel="stylesheet" href="style.css">
-  <link rel="preload" as="script" href="main.js">
+  <link rel="preload" as="style" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preload" as="script" href="/assets/js/main.js">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -88,7 +88,7 @@
     <!-- HERO -->
     <section id="home">
       <div class="section-inner">
-        <img src="logo1.svg" alt="Dead Gravel Logo" id="heroLogo" class="sunrise" style="max-width:min(84vw, 1440px); width:100%; height:auto;" width="1440" height="420" loading="eager" decoding="async" />
+        <img src="/assets/images/logo1.svg" alt="Dead Gravel Logo" id="heroLogo" class="sunrise" style="max-width:min(84vw, 1440px); width:100%; height:auto;" width="1440" height="420" loading="eager" decoding="async" />
         <h2 class="tagline">Ragged Roads & Wasted Souls</h2>
       </div>
     </section>
@@ -153,7 +153,7 @@
     <section id="demo" class="two-col">
       <div class="section-inner grid2">
         <div class="col-media">
-          <img src="demo1.webp" alt="Dead Gravel Demo Cover" class="media" width="1200" height="800" loading="lazy" decoding="async" />
+          <img src="/assets/images/demo1.jpg" alt="Dead Gravel Demo Cover" class="media" width="1200" height="800" loading="lazy" decoding="async" />
         </div>
         <div class="col-copy">
           <h2>New Demo Out Now</h2>
@@ -205,7 +205,7 @@
           <!-- Gravilhas -->
     <section id="gravilhas" class="link-wrap">
       <div class="section-inner backdrop-none">
-        <img src="gravilhas2.svg" alt="gravilhas" class="gravilhas" loading="lazy" decoding="async" />
+      <img src="/assets/images/gravilhas2.svg" alt="gravilhas" class="gravilhas" loading="lazy" decoding="async" />
         <a class="full-link" href="index.html" aria-label="Go to homepage"></a>
       </div>
     </section>
@@ -245,6 +245,6 @@
     </footer>
   </main>
 
-    <script src="main.js" defer></script>
-</body>
+    <script src="/assets/js/main.js" defer></script>
+  </body>
 </html>

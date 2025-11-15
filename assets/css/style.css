@@ -31,7 +31,7 @@ body {
     Noto Sans, Arial, sans-serif;
   color: var(--ink);
   background-color: var(--bg-dark);
-  background-image: url("bg1.webp");
+  background-image: url("/assets/images/bg1.jpg");
   background-position: center calc(50% + var(--parallax-shift));
   background-size: cover;
   background-repeat: no-repeat;
