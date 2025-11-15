@@ -46,236 +46,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg-dark:#0a0a0a;
-      --ink:#e8e8e8;
-      --ink-dim:#b8c0cc;
-      --brand-blue:#3939f1;
-      --maxw:1200px;
-      --safe-top: env(safe-area-inset-top, 0px);
-    }
-
-    *{ box-sizing:border-box }
-    html,body{ height:100% }
-    html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; overflow-x:hidden; }
-
-    body{
-      margin:0;
-      font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
-      color:var(--ink);
-      background:var(--bg-dark) url('bg1.webp') center / cover no-repeat fixed;
-    }
-    @media (max-width: 900px){
-      body{ background-attachment: scroll; }
-    }
-
-    /* === Background overlay (neutralized) === */
-    .bg-shade{
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      opacity: 0; transition: opacity .12s linear;
-      background: none; /* removed dark gradients */
-    }
-    main{ position: relative; z-index: 1; }
-
-    /* === Desktop/Tablet Nav === */
-    .top-links{
-      position:fixed; top: calc(8px + var(--safe-top)); left:0; right:0;
-      display:flex; gap:28px; justify-content:center;
-      padding-inline:12px;
-      z-index:10000;
-      transition:transform .28s ease, opacity .28s ease;
-      will-change:transform, opacity;
-      pointer-events:auto;
-    }
-    .top-links.hide{ transform:translateY(-140%); opacity:0; }
-    .top-links a,
-    .top-links a:link,
-    .top-links a:visited{
-      color:var(--ink) !important;
-      text-decoration:none;
-      font-family:"Six Caps",sans-serif;
-      letter-spacing:.16em; text-transform:uppercase;
-      font-size:clamp(1.5rem, 4vw, 2.4rem);
-      line-height:1;
-      padding:.25rem .35rem;
-      border-radius:.25rem;
-      opacity:.95; transition:color .2s ease, opacity .2s ease, background .2s ease;
-    }
-    .top-links a:hover,
-    .top-links a:focus,
-    .top-links a:focus-visible{
-      color:var(--brand-blue) !important;
-      background:transparent; opacity:1; outline:none;
-    }
-
-    /* === Hamburger & Mobile Menu (phones only) === */
-    .hamburger{ display:none; }
-    .mobile-menu{ display:none; }
-    .mobile-scrim{ display:none; }
-
-    @media (max-width:640px){
-      .top-links{ display:none; }
-
-      .hamburger{
-        position:fixed; top: calc(10px + var(--safe-top)); right: 10px;
-        z-index: 10010; display: inline-flex; align-items: center; justify-content: center;
-        width: 44px; height: 44px; border-radius: 10px;
-        border: 1px solid #ffffff22;
-        background: rgba(10,10,10,.55);
-        -webkit-backdrop-filter: blur(6px) saturate(140%);
-        backdrop-filter: blur(6px) saturate(140%);
-        color: var(--ink); cursor: pointer;
-      }
-      .hamburger:focus-visible{ outline:2px solid var(--brand-blue); outline-offset:2px; }
-      .hamburger svg{ width: 26px; height: 26px; }
-
-      .mobile-scrim{
-        position: fixed; inset:0; z-index:10004; background: rgba(0,0,0,.35);
-        opacity:0; pointer-events:none; transition: opacity .2s ease; display:block;
-      }
-      .mobile-scrim.open{ opacity:1; pointer-events:auto; }
-
-      .mobile-menu{
-        position: fixed; top: 0; left: 0; right: 0;
-        padding-top: calc(14px + var(--safe-top)); padding-bottom: 14px;
-        z-index: 10005; display: grid; gap: 10px; justify-items: center;
-        background: rgba(10,10,10,.78);
-        -webkit-backdrop-filter: blur(10px) saturate(150%);
-        backdrop-filter: blur(10px) saturate(150%);
-        border-bottom: 1px solid #ffffff22;
-        transform: translateY(-120%); opacity: 0; transition: transform .24s ease, opacity .24s ease;
-      }
-      .mobile-menu.open{ transform: translateY(0); opacity: 1; }
-      .mobile-menu a{
-        color: var(--ink); text-decoration: none;
-        font-family:"Six Caps",sans-serif; letter-spacing:.16em; text-transform:uppercase;
-        font-size: clamp(1.25rem, 6vw, 1.8rem); padding: .4rem .6rem; border-radius: .35rem;
-      }
-      .mobile-menu a:hover, .mobile-menu a:focus{ color: var(--brand-blue); }
-      .top-pad{ height: 90px; }
-    }
-
-    .top-pad{ height:56px; }
-
-    /* Sections */
-    section{
-      min-height:auto; display:grid; place-items:center; text-align:center;
-      padding:96px 20px 72px; position:relative; isolation:isolate;
-    }
-    #home{ min-height:100svh; }
-    .section-inner{ width:min(100%, var(--maxw)); }
-    @media (min-width: 901px){
-      .section-inner{ backdrop-filter: blur(2px) saturate(130%); }
-      #home .section-inner{ backdrop-filter:none !important; }
-    }
-
-    section h2{ font-family:"Gloock",serif; font-weight:400; font-size:clamp(1.6rem, 3.6vw, 3rem); margin:0 0 14px; }
-    .brand{ color:#fff !important; }
-    .tagline{ color:var(--ink-dim); margin-top:10px; font-weight:500; letter-spacing:0.04em; }
-
-    .sunrise{ opacity:0; transition:opacity .9s ease; }
-    .sunrise.show{ opacity:1; }
-    .logo-hidden{ opacity:0 !important; transition:opacity .35s ease; }
-
-    /* DEMO two-col */
-    .grid2{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:center; text-align:left; }
-    .media{ width:100%; height:auto; border-radius:14px; box-shadow:0 10px 40px #0009; border:1px solid #ffffff22; display:block; }
-    .col-copy p{ max-width:60ch; }
-    @media (max-width:900px){
-      .grid2{ grid-template-columns:1fr; text-align:center; }
-      .col-copy p{ margin-inline:auto; }
-      .media{ border:none; box-shadow:none; border-radius:10px; }
-    }
-    #demo{ padding-top:48px; }
-
-    /* Buttons */
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      cursor:pointer; padding:12px 16px; min-height:44px;
-      border-radius:999px; border:1px solid #ffffff30;
-      background:#0e141d; color:var(--ink); text-decoration:none;
-      font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:.85rem;
-      transition:transform .15s ease, box-shadow .15s ease, color .2s ease, border-color .2s ease;
-    }
-    .btn:hover{ box-shadow:0 6px 24px #0008; transform:translateY(-1px); }
-    .btn:focus-visible{ outline:2px solid #3939f1; outline-offset:2px; }
-    .btn.btn-outline{ background:transparent; border-color:#ffffff40; }
-    .btn.btn-outline:hover{ border-color:#3939f1; color:#3939f1; }
-
-    /* Shows */
-    .shows-grid{
-      display:grid; gap:18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); align-items:stretch;
-    }
-    .show-card{
-      position:relative; padding:18px 16px 16px;
-      background:#0b0f16cc; border:1px solid #ffffff22; border-radius:16px;
-      box-shadow:0 12px 40px #000a; overflow:hidden;
-    }
-    .show-card::before,.show-card::after{
-      content:""; position:absolute; width:20px; height:20px; border:1px solid #ffffff44;
-    }
-    .show-card::before{ top:8px; left:8px; border-right:none; border-bottom:none; }
-    .show-card::after{ bottom:8px; right:8px; border-left:none; border-top:none; }
-    .show-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-    .show-date{
-      font-family:"Six Caps", sans-serif; letter-spacing:.14em; text-transform:uppercase;
-      font-size: clamp(1.4rem, 2.6vw, 2rem); line-height:1; color:#3939f1;
-    }
-    .show-city{ font-weight:600; color:#e8e8e8b3; font-size: clamp(1rem, 1.6vw, 1.15rem); }
-    .show-venue{ font-size:1rem; color:#e8e8e8; margin-bottom:14px; }
-    .show-cta{ display:flex; justify-content:flex-end; }
-
-    /* Video */
-    .video-wrap{ position:relative; width:100%; max-width:var(--maxw); margin:24px auto 0; aspect-ratio:16/9; }
-    .video-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
-
-    /* Quote box */
-    .quote-box{
-      position: relative; margin: 12px auto 24px; padding: 20px 22px 20px 26px;
-      max-width: 580px; text-align: left;
-      background: linear-gradient(180deg, rgba(8,10,14,.88), rgba(8,10,14,.72));
-      border: 1px solid #ffffff22; border-radius: 16px;
-      box-shadow: 0 12px 40px #000a; backdrop-filter: blur(4px) saturate(120%);
-    }
-    .quote-box::before{
-      content: "“"; position: absolute; left: 12px; top: -18px;
-      font-family: "Gloock", serif; font-size: 72px; line-height: 1; color: #3939f1; opacity: .9; pointer-events: none;
-    }
-    .quote{ font-family: "Gloock", serif; color: var(--ink-dim); font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.65; margin: 0; text-wrap: balance; }
-    .quote-accent{ position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, #3939f1, #2a2a80); border-radius: 16px 0 0 16px; opacity:.9; }
-
-        /* Gravilhas */
-    #gravilhas .section-inner{ backdrop-filter:none !important; }
-    .gravilhas{
-      width: clamp(160px, 18vw, 260px);
-      height:auto; display:block; margin: 6px auto 0;
-      border:none; box-shadow:none; border-radius:0; filter:none; opacity:.95;
-    }
-    .link-wrap { position: relative; }
-.full-link {
-  position: absolute; inset: 0;
-  /* optional: show it’s clickable without affecting layout */
-  display: block;
-}
-
-    /* Footer (match bio.html) */
-    footer{ background:none; border:0; padding:28px 16px 48px; text-align:center; }
-    .socials{ display:flex; gap:18px; justify-content:center; align-items:center; margin:12px 0 0; flex-wrap:wrap; }
-    .socials a{ display:inline-grid; place-items:center; color:#3939f1; }
-    .socials a:hover{ opacity:.85; }
-    .socials svg{ width:56px; height:56px; }
-    .footer-logo{ width:140px; height:auto; display:block; margin:0 auto 10px; }
-    .rights{ color:var(--ink-dim); font-weight:500; letter-spacing:.04em; font-size:clamp(1rem, 1.6vw, 1.1rem); margin-top:6px; }
-
-    @media (prefers-reduced-motion: reduce){
-      .top-links{ transition:none; }
-      .btn, .btn:hover{ transition:none; transform:none; box-shadow:none; }
-      .bg-shade{ transition: none; }
-    }
-  </style>
+    <link rel="preload" as="style" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" as="script" href="main.js">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
   <!-- Neutralized overlay -->
   <div class="bg-shade" id="bgShade" aria-hidden="true"></div>
 
@@ -306,7 +82,7 @@
     <a href="mailto:deadgravell77@gmail.com">Contact</a>
   </div>
 
-  <main>
+  <main id="main" role="main">
     <div class="top-pad" aria-hidden="true"></div>
 
     <!-- HERO -->
@@ -314,6 +90,62 @@
       <div class="section-inner">
         <img src="logo1.svg" alt="Dead Gravel Logo" id="heroLogo" class="sunrise" style="max-width:min(84vw, 1440px); width:100%; height:auto;" width="1440" height="420" loading="eager" decoding="async" />
         <h2 class="tagline">Ragged Roads & Wasted Souls</h2>
+      </div>
+    </section>
+
+    <!-- GHOST TRANSMISSIONS & RADIO STATIC (News) -->
+    <section id="ghost-transmissions" aria-labelledby="ghost-transmissions-title">
+      <div class="section-inner">
+        <div class="rundown-head">
+          <h2 id="ghost-transmissions-title">Ghost Transmissions & Radio Static</h2>
+          <p class="tagline">Signals from the static. News from the gravel.</p>
+        </div>
+        <div style="display: flex; justify-content: center;">
+          <article 
+            class="rundown-card" 
+            style="
+              max-width: 700px; 
+              margin: 0 auto; 
+              position: relative; 
+              padding: 34px 28px 28px 36px;
+              background: linear-gradient(180deg, rgba(8,10,14,0.94),rgba(8,10,14,0.8));
+              box-shadow: 0 12px 40px #000a;
+              border-radius: 16px;
+              border: 1px solid #ffffff22;
+              text-align: left;
+              ">
+            <span 
+              aria-hidden="true"
+              style="
+                position: absolute;
+                left: 0; top: 0; bottom: 0;
+                width: 6px;
+                background: linear-gradient(180deg,#3939f1,#2a2a80);
+                border-radius: 16px 0 0 16px;
+                opacity: .92;"
+            ></span>
+            <h3 
+              style="
+                font-size: clamp(2.1rem,4vw,2.8rem); 
+                font-family: 'Gloock', serif;
+                font-weight: 400;
+                margin: 0 0 22px 0;
+                color: #e8e8e8;
+                letter-spacing: 0.01em;
+                line-height: 1.08;
+                "
+            >
+              Debut Album in the Works:<br>
+              <em style="font-style:italic; color:#3939f1; font-family:inherit;">Voodoo County</em>
+            </h3>
+            <p style="font-size:1.19rem; color:var(--ink-dim); margin-bottom: 13px;">
+              Dead Gravel are currently working on their first album, <strong style="color:#fff">Voodoo County</strong> – a 12-track southern gothic road record steeped in grit, and gasoline.
+            </p>
+            <p style="font-size:1.19rem; color:var(--ink-dim);">
+              From backwoods sermons to desert ghost towns, it drags the listener through the lowlands of sin and salvation, told through rusted guitars, slow-burn grooves, and voices that sound half-dead, half-divine.
+            </p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -353,30 +185,30 @@
       </div>
     </section>
 
-   <!-- SHOWS -->
-<section id="shows">
-  <div class="section-inner">
-    <h2>Shows</h2>
+    <!-- SHOWS -->
+    <section id="shows">
+      <div class="section-inner">
+        <h2>Shows</h2>
 
-    <!-- Keep markup for later but hide it -->
-    <div class="shows-grid" style="display:none;" aria-hidden="true">
-      <!-- (existing show-card articles remain here, unchanged) -->
-    </div>
+        <!-- Keep markup for later but hide it -->
+        <div class="shows-grid hidden" aria-hidden="true">
+          <!-- (existing show-card articles remain here, unchanged) -->
+        </div>
 
-    <p class="tagline" style="margin-top:14px;" aria-live="polite">
-      Coming soon.
-    </p>
-  </div>
-</section>
+        <p class="tagline" style="margin-top:14px;" aria-live="polite">
+          Coming soon.
+        </p>
+      </div>
+    </section>
 
 
           <!-- Gravilhas -->
-<section id="gravilhas" class="link-wrap">
-  <div class="section-inner backdrop-none">
-    <img src="gravilhas2.svg" alt="gravilhas" class="gravilhas" />
-    <a class="full-link" href="index.html" aria-label="Go to homepage"></a>
-  </div>
-</section>
+    <section id="gravilhas" class="link-wrap">
+      <div class="section-inner backdrop-none">
+        <img src="gravilhas2.svg" alt="gravilhas" class="gravilhas" loading="lazy" decoding="async" />
+        <a class="full-link" href="index.html" aria-label="Go to homepage"></a>
+      </div>
+    </section>
 
     <!-- FOOTER (same style as bio.html) -->
     <footer>
@@ -413,108 +245,6 @@
     </footer>
   </main>
 
-  <script>
-    // One rAF-coalesced scroll handler (overlay optional)
-    (function initScrollEffects(){
-      const shade = document.getElementById('bgShade');
-      const nav   = document.getElementById('topLinks');
-      if (!nav) return;
-
-      const mqMobile = window.matchMedia('(max-width: 640px)');
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      const maxOpacity = 0.0; // force no darkening
-      const rampPx = 220;
-
-      let ticking = false;
-
-      function apply(){
-        const y = window.scrollY || 0;
-
-        // Background darken ramp (disabled if maxOpacity = 0 or shade missing)
-        if (shade && maxOpacity > 0 && !prefersReduced) {
-          const t = Math.min(1, y / rampPx);
-          shade.style.opacity = (t * maxOpacity).toFixed(3);
-        } else if (shade) {
-          shade.style.opacity = '0';
-        }
-
-        // Desktop/tablet: nav shown only at very top
-        if (mqMobile.matches) {
-          nav.classList.remove('hide');
-        } else {
-          nav.classList.toggle('hide', y > 40);
-        }
-
-        ticking = false;
-      }
-
-      function onScroll(){
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(apply);
-        }
-      }
-
-      apply();
-      window.addEventListener('scroll', onScroll, { passive:true });
-      window.addEventListener('resize', apply, { passive:true });
-      mqMobile.addEventListener?.('change', apply);
-    })();
-
-    // Footer year
-    (function(){ const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
-
-    // Logo fade-in/out with hero intersection (cosmetic)
-    (function(){
-      const logo = document.getElementById('heroLogo');
-      const hero = document.getElementById('home');
-      if (!logo || !hero) return;
-      requestAnimationFrame(() => logo.classList.add('show'));
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          logo.classList.toggle('logo-hidden', !e.isIntersecting);
-        });
-      }, { threshold: 0.3 });
-      io.observe(hero);
-    })();
-
-    // Mobile hamburger behavior + body scroll lock
-    (function(){
-      const menuBtn = document.getElementById('menuBtn');
-      const mobileMenu = document.getElementById('mobileMenu');
-      const scrim = document.getElementById('mobileScrim');
-      if (!menuBtn || !mobileMenu || !scrim) return;
-
-      function lockScroll(lock){
-        document.body.style.overflow = lock ? 'hidden' : '';
-        document.body.style.touchAction = lock ? 'none' : '';
-      }
-      function closeMenu(){
-        mobileMenu.classList.remove('open');
-        scrim.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded','false');
-        menuBtn.setAttribute('aria-label','Open menu');
-        lockScroll(false);
-      }
-      function openMenu(){
-        mobileMenu.classList.add('open');
-        scrim.classList.add('open');
-        menuBtn.setAttribute('aria-expanded','true');
-        menuBtn.setAttribute('aria-label','Close menu');
-        lockScroll(true);
-      }
-
-      menuBtn.addEventListener('click', () => {
-        (mobileMenu.classList.contains('open') ? closeMenu : openMenu)();
-      });
-      scrim.addEventListener('click', closeMenu);
-      mobileMenu.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
-      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-      window.addEventListener('resize', () => {
-        if (!window.matchMedia('(max-width: 640px)').matches) closeMenu();
-      }, { passive:true });
-    })();
-  </script>
+    <script src="main.js" defer></script>
 </body>
 </html>
