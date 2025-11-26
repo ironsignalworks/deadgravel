@@ -1,3 +1,9 @@
+
 User-agent: *
 Disallow:
+
 Sitemap: https://deadgravel.com/sitemap.xml
+
+# Note: Removed non-standard directive 'Content-signal: search=yes,ai-train=no'
+# If you need to convey this metadata, keep it as a comment or expose it
+# via HTTP headers or a site metadata endpoint instead of robots.txt.

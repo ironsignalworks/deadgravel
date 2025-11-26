@@ -68,7 +68,7 @@
     <a href="#shows">Shows</a>
     <a href="bio.html">Bio</a>
     <a href="merch.html">Merch</a>
-    <a href="mailto:deadgravell77@gmail.com">Contact</a>
+    <a href="#" data-email-user="deadgravell77" data-email-domain="gmail.com">Contact</a>
   </nav>
 
   <!-- MOBILE: Hamburger + slide-down menu -->
@@ -86,7 +86,7 @@
     <a href="#shows">Shows</a>
     <a href="bio.html">Bio</a>
     <a href="merch.html">Merch</a>
-    <a href="mailto:deadgravell77@gmail.com">Contact</a>
+    <a href="#" data-email-user="deadgravell77" data-email-domain="gmail.com">Contact</a>
   </div>
 
   <main id="main" role="main">
@@ -251,6 +251,27 @@
     </footer>
   </main>
 
+    <!-- Construct email links at runtime to avoid exposing raw addresses in HTML
+         (prevents automatic email obfuscation scripts from being injected and
+         reduces network dependency chains). -->
+    <script>
+      (function(){
+        try {
+          var els = document.querySelectorAll('a[data-email-user]');
+          Array.prototype.forEach.call(els, function(a){
+            var user = a.getAttribute('data-email-user');
+            var domain = a.getAttribute('data-email-domain');
+            if(user && domain){
+              var email = user + '@' + domain;
+              a.setAttribute('href', 'mailto:' + email);
+              a.setAttribute('aria-label', a.getAttribute('aria-label') || ('Email ' + user));
+            }
+          });
+        } catch (e) {
+          // fail silently
+        }
+      })();
+    </script>
     <script src="/assets/js/main.js" defer></script>
   </body>
 </html>
