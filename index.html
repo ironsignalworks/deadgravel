@@ -43,6 +43,10 @@
 
   <!-- Preloads -->
   <link rel="preload" as="image" href="/assets/images/bg1.webp" />
+  <style>
+    /* Reserve intrinsic space for hero logo to avoid CLS and keep it centered. */
+    #heroLogo{ display:block; aspect-ratio:1440 / 420; max-width: min(84vw, 1440px); width:auto; height:auto; margin:0 auto; }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Preconnect common third-party origins used on the page (video embeds) -->
@@ -95,7 +99,7 @@
     <!-- HERO -->
     <section id="home">
       <div class="section-inner">
-        <img src="/assets/images/logo1.svg" alt="Dead Gravel Logo" id="heroLogo" class="sunrise" style="max-width:min(84vw, 1440px); width:100%; height:auto;" width="1440" height="420" loading="eager" fetchpriority="high" decoding="async" />
+        <img src="/assets/images/logo1.svg" alt="Dead Gravel Logo" id="heroLogo" class="sunrise" style="max-width:min(84vw, 1440px); width:auto; height:auto;" width="1440" height="420" loading="eager" fetchpriority="high" decoding="async" />
         <h2 class="tagline">Ragged Roads & Wasted Souls</h2>
       </div>
     </section>
