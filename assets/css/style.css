@@ -321,8 +321,8 @@ section {
 section h2 {
   font-family: "Gloock", serif;
   font-weight: 400;
-  font-size: clamp(1.6rem, 3.6vw, 3rem);
-  margin: 0 0 14px;
+  font-size: clamp(1.3rem, 3.6vw, 3rem);
+  margin: 0 0 0px;
 }
 
 .brand {
