@@ -11,6 +11,7 @@ function initScrollEffects() {
 
   let ticking = false;
   let navHidden = nav.classList.contains("hide");
+  let lastShadeOpacity = null;
 
   function apply() {
     const y = window.scrollY || 0;
@@ -18,9 +19,16 @@ function initScrollEffects() {
 
     if (shade && maxOpacity > 0 && !reducedMotion) {
       const t = Math.min(1, y / rampPx);
-      shade.style.opacity = (t * maxOpacity).toFixed(3);
+      const newOpacity = +(t * maxOpacity).toFixed(3);
+      if (lastShadeOpacity !== newOpacity) {
+        shade.style.opacity = newOpacity;
+        lastShadeOpacity = newOpacity;
+      }
     } else if (shade) {
-      shade.style.opacity = "0";
+      if (lastShadeOpacity !== 0) {
+        shade.style.opacity = "0";
+        lastShadeOpacity = 0;
+      }
     }
 
     if (mqMobile.matches) {
