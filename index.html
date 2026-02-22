@@ -19,8 +19,14 @@
       })(window.location);
     </script>
     <title>Dead Gravel | Official Site</title>
-    <meta name="description" content="Dead Gravel official site. Modern western grit." />
+    <meta
+      name="description"
+      content="Dead Gravel official site. Rust, ruin, and rock'n'roll from the lowlands of sin and salvation."
+    />
     <meta name="theme-color" content="#0b0f12" />
+    <meta name="author" content="Dead Gravel" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://deadgravel.com/" />
 
     <link rel="icon" href="/icons/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="/icons/favicon-32.png" sizes="32x32" />
@@ -29,14 +35,29 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Dead Gravel" />
+    <meta property="og:url" content="https://deadgravel.com/" />
     <meta property="og:title" content="Dead Gravel Official Site" />
-    <meta property="og:description" content="Modern western grit. New song 'Ruin My Fun' out now." />
-    <meta property="og:image" content="/assets/images/thumb.jpg" />
+    <meta
+      property="og:description"
+      content="Rust, ruin, and rock'n'roll. Listen to 'Ruin My Fun' and explore the world of Dead Gravel."
+    />
+    <meta property="og:image" content="https://deadgravel.com/thumb.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Dead Gravel promotional artwork" />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://deadgravel.com/" />
     <meta name="twitter:title" content="Dead Gravel Official Site" />
-    <meta name="twitter:description" content="Modern western grit. New song 'Ruin My Fun' out now." />
-    <meta name="twitter:image" content="/assets/images/thumb.jpg" />
+    <meta
+      name="twitter:description"
+      content="Rust, ruin, and rock'n'roll. Listen to 'Ruin My Fun' and explore the world of Dead Gravel."
+    />
+    <meta name="twitter:image" content="https://deadgravel.com/thumb.jpg" />
+    <meta name="twitter:image:alt" content="Dead Gravel promotional artwork" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,6 +65,34 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap"
     />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://deadgravel.com/#website",
+            "url": "https://deadgravel.com/",
+            "name": "Dead Gravel",
+            "inLanguage": "en-US",
+            "description": "Dead Gravel official site. Rust, ruin, and rock'n'roll from the lowlands of sin and salvation."
+          },
+          {
+            "@type": "MusicGroup",
+            "@id": "https://deadgravel.com/#musicgroup",
+            "name": "Dead Gravel",
+            "url": "https://deadgravel.com/",
+            "image": "https://deadgravel.com/thumb.jpg",
+            "genre": ["Rock", "Southern Gothic", "Blues Rock"],
+            "email": "mailto:deadgravell77@gmail.com",
+            "sameAs": [
+              "https://deadgravel.bandcamp.com/track/ruin-my-fun",
+              "https://www.youtube.com/watch?v=XaUY1Xp0Ppc"
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
