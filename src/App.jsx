@@ -25,6 +25,10 @@ const routeMeta = {
   }
 };
 
+function normalizePath(pathname) {
+  return pathname !== "/" ? pathname.replace(/\/+$/, "") : "/";
+}
+
 function upsertMeta(attr, key, value) {
   let el = document.head.querySelector(`meta[${attr}="${key}"]`);
   if (!el) {
@@ -46,7 +50,7 @@ function upsertLink(rel, href) {
 }
 
 function applyRouteMeta(pathname) {
-  const normalizedPath = pathname !== "/" ? pathname.replace(/\/+$/, "") : "/";
+  const normalizedPath = normalizePath(pathname);
   const meta = routeMeta[normalizedPath] ?? routeMeta["/"];
   document.title = meta.title;
 
@@ -128,12 +132,13 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hideDesktopNav, setHideDesktopNav] = useState(false);
   const [shadeOpacity, setShadeOpacity] = useState(0);
+  const normalizedPath = useMemo(() => normalizePath(location.pathname), [location.pathname]);
 
   const routeClass = useMemo(() => {
-    if (location.pathname === "/bio") return "route-bio";
-    if (location.pathname === "/merch") return "route-merch";
+    if (normalizedPath === "/bio") return "route-bio";
+    if (normalizedPath === "/merch") return "route-merch";
     return "route-home";
-  }, [location.pathname]);
+  }, [normalizedPath]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -154,7 +159,7 @@ function App() {
   }, [menuOpen]);
 
   useEffect(() => {
-    const isHome = location.pathname === "/";
+    const isHome = normalizedPath === "/";
     const maxOpacity = isHome ? 0 : 0.75;
     let ticking = false;
 
@@ -207,7 +212,7 @@ function App() {
 
   useEffect(() => {
     applyRouteMeta(location.pathname);
-  }, [location.pathname]);
+  }, [normalizedPath]);
 
   return (
     <div className={`site-shell ${routeClass}`}>
