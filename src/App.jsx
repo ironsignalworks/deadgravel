@@ -160,8 +160,18 @@ function App() {
 
   useEffect(() => {
     const isHome = normalizedPath === "/";
+    const isSubpage = normalizedPath === "/bio" || normalizedPath === "/merch";
+    const supportsBandOverlay = normalizedPath === "/" || normalizedPath === "/bio" || normalizedPath === "/merch";
     const maxOpacity = isHome ? 0 : 0.75;
+    const fadeDistance = 220;
+    const bandZoomDistance = 260;
+    let triggerSection = null;
     let ticking = false;
+
+    const syncTriggerSection = () => {
+      const targetId = normalizedPath === "/" ? "home" : normalizedPath === "/bio" ? "bio" : normalizedPath === "/merch" ? "header" : null;
+      triggerSection = targetId ? document.getElementById(targetId) : null;
+    };
 
     const apply = () => {
       const y = window.scrollY || 0;
@@ -175,8 +185,41 @@ function App() {
         setShadeOpacity(Number(next.toFixed(3)));
       }
 
-      const parallaxOffset = isMobileBg ? Math.round(y * 0.28) : 0;
+      const parallaxOffset = isMobileBg ? Math.round(Math.min(y * 0.28, 180)) : 0;
       document.documentElement.style.setProperty("--bg-parallax-offset", `${parallaxOffset}px`);
+      if (isSubpage) {
+        const subpageParallaxOffset = isMobileBg
+          ? Math.round(Math.min(y * 0.22, 160))
+          : Math.round(y * 0.1);
+        document.documentElement.style.setProperty("--subpage-bg-parallax-offset", `${subpageParallaxOffset}px`);
+      } else {
+        document.documentElement.style.setProperty("--subpage-bg-parallax-offset", "0px");
+      }
+
+      if (supportsBandOverlay && triggerSection) {
+        const triggerBottom = triggerSection.offsetTop + triggerSection.offsetHeight;
+        const revealProgress = (y - triggerBottom) / fadeDistance;
+        const bandOpacity = Math.max(0, Math.min(1, revealProgress));
+        const bandParallaxFactor = isMobileBg ? 0.2 : 0.12;
+        const bandMaxOffset = isMobileBg ? 140 : 220;
+        const postTriggerScroll = Math.max(0, y - triggerBottom);
+        const rawBandOffset = postTriggerScroll * bandParallaxFactor;
+        const bandParallaxOffset = Math.round(Math.min(rawBandOffset, bandMaxOffset));
+        const zoomProgress = Math.max(0, Math.min(1, (rawBandOffset - bandMaxOffset) / bandZoomDistance));
+        const bandScale = 1 + zoomProgress * 0.08;
+        const homeBaseOpacity = normalizedPath === "/" ? 1 - bandOpacity : 1;
+        document.documentElement.style.setProperty("--home-band-opacity", bandOpacity.toFixed(3));
+        document.documentElement.style.setProperty("--home-band-parallax-offset", `${bandParallaxOffset}px`);
+        document.documentElement.style.setProperty("--home-band-scale", bandScale.toFixed(3));
+        document.documentElement.style.setProperty("--home-base-opacity", homeBaseOpacity.toFixed(3));
+        document.documentElement.style.setProperty("--home-base-mask-opacity", (1 - homeBaseOpacity).toFixed(3));
+      } else {
+        document.documentElement.style.setProperty("--home-band-opacity", "0");
+        document.documentElement.style.setProperty("--home-band-parallax-offset", "0px");
+        document.documentElement.style.setProperty("--home-band-scale", "1");
+        document.documentElement.style.setProperty("--home-base-opacity", "1");
+        document.documentElement.style.setProperty("--home-base-mask-opacity", "0");
+      }
 
       ticking = false;
     };
@@ -188,13 +231,25 @@ function App() {
       }
     };
 
+    const onResize = () => {
+      syncTriggerSection();
+      apply();
+    };
+
+    syncTriggerSection();
     apply();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", apply, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", apply);
+      window.removeEventListener("resize", onResize);
       document.documentElement.style.setProperty("--bg-parallax-offset", "0px");
+      document.documentElement.style.setProperty("--subpage-bg-parallax-offset", "0px");
+      document.documentElement.style.setProperty("--home-band-opacity", "0");
+      document.documentElement.style.setProperty("--home-band-parallax-offset", "0px");
+      document.documentElement.style.setProperty("--home-band-scale", "1");
+      document.documentElement.style.setProperty("--home-base-opacity", "1");
+      document.documentElement.style.setProperty("--home-base-mask-opacity", "0");
     };
   }, [location.pathname]);
 
@@ -399,22 +454,6 @@ function BioPage() {
     <>
       <section id="bio">
         <div className="section-inner bio-grid">
-          <div className="article col-intro">
-            <img src="/assets/images/logo1.svg" alt="Dead Gravel logo" className="bio-top-logo" decoding="async" />
-            <div className="kicker">Where the crows circle, halleluja!</div>
-            <h2 className="brand">Rust, Ruin and Rock'n'Roll</h2>
-            <div className="rule" />
-
-            <p className="lede">
-              <strong>DEAD GRAVEL</strong> drags rock'n'roll through the dirt and makes it holy again. It's sweat,
-              smoke, salvation, and a prayer you won't remember in the morning.
-            </p>
-            <p>
-              <em>"Ruin My Fun,"</em> the opening track from the demo <em>Dustborn</em>, kicks down the door with a
-              sneer and a smile. Loud, loose, and unapologetically alive.
-            </p>
-          </div>
-
           <div className="col-media">
             <img src="/assets/images/lineup.jpeg" alt="Dead Gravel lineup artwork" className="media lineup-media" />
             <p className="artwork-credit">
@@ -425,36 +464,42 @@ function BioPage() {
             </p>
           </div>
 
-          <div className="article col-lineup">
-            <p>
-              <strong>Lineup (left-to-right):</strong>
-              <br />
-              J. Nash - Guitars
-              <br />
-              Joey Del Grave - Vocals, Harmonica
-              <br />
-              Layla Stone - Keyboards, Vocals
-              <br />
-              Dusty Reyes - Guitar
-              <br />
-              Victor Silver - Drums
-              <br />
-              Sloane Vega - Bass
-            </p>
-          </div>
+          <div className="col-content">
+            <div className="article col-intro">
+              <div className="kicker">Where the crows circle, halleluja!</div>
+              <h2 className="brand">Rust, Ruin and Rock'n'Roll</h2>
+              <div className="rule" />
 
-          <div className="article col-body">
-            <p>
-              A five-piece storm of desert thunder and dive-bar soul, DEAD GRAVEL blends swamp and swagger into
-              something born to be blasted through busted speakers.
-            </p>
+              <p className="lede">
+                <strong>DEAD GRAVEL</strong> drags rock'n'roll through the dirt and makes it holy again. It's sweat,
+                smoke, salvation, and a prayer you won't remember in the morning.
+              </p>
+            </div>
 
-            <p>
-              <strong>Dustborn</strong> is the sound of six outlaws with nothing to lose, howling down the highway on
-              bald tires and borrowed time. With nods to Fleetwood Mac's harmony, Blue Oyster Cult's mystique, The
-              Stooges' danger, and The New York Dolls' revved-up swagger, it's rock'n'roll stripped to bones, blood,
-              and smoke.
-            </p>
+            <div className="article col-body">
+              <p>
+                A five-piece storm of desert thunder and dive-bar soul, DEAD GRAVEL blends swamp and swagger into
+                something born to be blasted through busted speakers.
+              </p>
+            </div>
+
+            <div className="article col-lineup">
+              <p>
+                <strong>Lineup (left-to-right):</strong>
+                <br />
+                J. Nash - Guitars
+                <br />
+                Joey Del Grave - Vocals, Harmonica
+                <br />
+                Layla Stone - Keyboards, Vocals
+                <br />
+                Dusty Reyes - Guitar
+                <br />
+                Victor Silver - Drums
+                <br />
+                Sloane Vega - Bass
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -572,11 +617,6 @@ function MerchCard({ product }) {
         )}
       </div>
 
-      {STORE_DISABLED && (
-        <div className="disabled-cover" aria-hidden="true">
-          <span className="disabled-chip">Coming Soon</span>
-        </div>
-      )}
     </article>
   );
 }
