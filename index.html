@@ -1,286 +1,52 @@
-<!-- /index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Dead Gravel | Official Site</title>
-  <meta name="description" content="Dead Gravel | Official site" />
-
-  <!-- Icons -->
-<link rel="icon" href="/icons/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" href="/icons/favicon-32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="/icons/favicon-192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#0b0f12" />
-
-<!-- SOCIAL PREVIEW -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Dead Gravel">
-<meta property="og:title" content="Dead Gravel Official Site">
-<meta property="og:description" content="Modern western grit. New song ‘Ruin My Fun’ out now.">
-<meta property="og:url" content="https://deadgravel.com/">
-
-<!-- Use JPG primary; keep WebP as optional -->
-<meta property="og:image" content="https://deadgravel.com/assets/images/thumb.jpg">
-<meta property="og:image:secure_url" content="https://deadgravel.com/assets/images/thumb.jpg">
-<meta property="og:image:alt" content="Dead Gravel promo thumbnail">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@DeadGravel77">
-<meta name="twitter:creator" content="@DeadGravel77">
-<meta name="twitter:title" content="Dead Gravel Official Site">
-<meta name="twitter:description" content="Modern western grit. New song ‘Ruin My Fun’ out now.">
-<meta name="twitter:image" content="https://deadgravel.com/assets/images/thumb.jpg">
-
-<!-- Optional secondary WebP (some crawlers may use it) -->
-<link rel="preload" as="image" href="/assets/images/thumb.webp" imagesrcset="/assets/images/thumb.webp 1200w" imagesizes="1200px">
-
-  <!-- Preloads -->
-  <link rel="preload" as="image" href="/assets/images/bg1.webp" />
-  <style>
-    /* Reserve intrinsic space for hero logo to avoid CLS and keep it centered. */
-    #heroLogo{ display:block; aspect-ratio:1440 / 420; max-width: min(84vw, 1440px); width:auto; height:auto; margin:0 auto; }
-  </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Preconnect common third-party origins used on the page (video embeds) -->
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://s.ytimg.com">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap" onload="this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap">
-  </noscript>
-
-  <link rel="preload" as="style" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="preload" as="script" href="/assets/js/main.js">
-</head>
-<body>
-  <a class="skip-link" href="#main">Skip to main content</a>
-  <!-- Neutralized overlay -->
-  <div class="bg-shade" id="bgShade" aria-hidden="true"></div>
-
-  <!-- DESKTOP/TABLET NAV -->
-  <nav class="top-links" id="topLinks" aria-label="Primary">
-    <a href="index.html">Home</a>
-    <a href="#shows">Shows</a>
-    <a href="bio.html">Bio</a>
-    <a href="merch.html">Merch</a>
-    <a href="#" data-email-user="deadgravell77" data-email-domain="gmail.com">Contact</a>
-  </nav>
-
-  <!-- MOBILE: Hamburger + slide-down menu -->
-  <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-  <div class="mobile-scrim" id="mobileScrim"></div>
-  <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile primary">
-    <a href="index.html">Home</a>
-    <a href="#shows">Shows</a>
-    <a href="bio.html">Bio</a>
-    <a href="merch.html">Merch</a>
-    <a href="#" data-email-user="deadgravell77" data-email-domain="gmail.com">Contact</a>
-  </div>
-
-  <main id="main" role="main">
-    <div class="top-pad" aria-hidden="true"></div>
-
-    <!-- HERO -->
-    <section id="home">
-      <div class="section-inner">
-        <img src="/assets/images/logo1.svg" alt="Dead Gravel Logo" id="heroLogo" class="sunrise" style="max-width:min(84vw, 1440px); width:auto; height:auto;" width="1440" height="420" loading="eager" fetchpriority="high" decoding="async" />
-        <h2 class="tagline">Ragged Roads & Wasted Souls</h2>
-      </div>
-    </section>
-
-    <!-- GHOST TRANSMISSIONS & RADIO STATIC (News) -->
-    <section id="ghost-transmissions" aria-labelledby="ghost-transmissions-title">
-      <div class="section-inner">
-        <div class="rundown-head">
-          <h2 id="ghost-transmissions-title">Ghost Transmissions & Radio Static</h2>
-          <p class="tagline">Signals from the static. News from the gravel.</p>
-        </div>
-        <div style="display: flex; justify-content: center;">
-          <article 
-            class="rundown-card" 
-            style="
-              max-width: 700px; 
-              margin: 0 auto; 
-              position: relative; 
-              padding: 34px 28px 28px 36px;
-              background: linear-gradient(180deg, rgba(8,10,14,0.94),rgba(8,10,14,0.8));
-              box-shadow: 0 12px 40px #000a;
-              border-radius: 16px;
-              border: 1px solid #ffffff22;
-              text-align: left;
-              ">
-            <span 
-              aria-hidden="true"
-              style="
-                position: absolute;
-                left: 0; top: 0; bottom: 0;
-                width: 6px;
-                background: linear-gradient(180deg,#3939f1,#2a2a80);
-                border-radius: 16px 0 0 16px;
-                opacity: .92;"
-            ></span>
-            <h3 
-              style="
-                font-size: clamp(2.1rem,4vw,2.8rem); 
-                font-family: 'Gloock', serif;
-                font-weight: 400;
-                margin: 0 0 22px 0;
-                color: #e8e8e8;
-                letter-spacing: 0.01em;
-                line-height: 1.08;
-                "
-            >
-              Debut Album in the Works:<br>
-              <em style="font-style:italic; color:#3939f1; font-family:inherit;">Voodoo County</em>
-            </h3>
-            <p style="font-size:1.19rem; color:var(--ink-dim); margin-bottom: 13px;">
-              Dead Gravel are currently working on their first album, <strong style="color:#fff">Voodoo County</strong> – a 12-track southern gothic road record steeped in grit, and gasoline.
-            </p>
-            <p style="font-size:1.19rem; color:var(--ink-dim);">
-              From backwoods sermons to desert ghost towns, it drags the listener through the lowlands of sin and salvation, told through rusted guitars, slow-burn grooves, and voices that sound half-dead, half-divine.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- DEMO -->
-    <section id="demo" class="two-col">
-      <div class="section-inner grid2">
-        <div class="col-media">
-          <picture>
-            <source media="(max-width: 900px)" srcset="/assets/images/demo1.webp">
-            <img src="/assets/images/demo1.webp" alt="Dead Gravel Demo Cover" class="media" width="1200" height="800" loading="lazy" decoding="async" />
-          </picture>
-        </div>
-        <div class="col-copy">
-          <h2>New Demo Out Now</h2>
-          <p>Hear the first cut of our upcoming demo Dustborn - Raw, loud, and unvarnished. Recorded straight to the bone.</p>
-          <p><a class="btn" href="https://deadgravel.bandcamp.com/track/ruin-my-fun" target="_blank" rel="noopener">Listen on Bandcamp</a></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIDEO -->
-    <section id="video">
-      <div class="section-inner">
-        <h2 class="brand">“Ruin My Fun”</h2>
-
-        <div class="quote-box" role="note" aria-label="Video description">
-          <span class="quote-accent" aria-hidden="true"></span>
-          <p class="quote">“Ruin My Fun,” the opening track from the demo <em>Dustborn</em>, kicks down the door with a sneer and a smile. Loud, loose, and unapologetically alive.</p>
-        </div>
-
-        <div class="video-wrap" data-video-src="https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU">
-          <button class="video-load-btn" type="button" aria-label="Play Ruin My Fun video">
-            <span>Play Video</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- SHOWS -->
-    <section id="shows">
-      <div class="section-inner">
-        <h2>Shows</h2>
-
-        <!-- Keep markup for later but hide it -->
-        <div class="shows-grid hidden" aria-hidden="true">
-          <!-- (existing show-card articles remain here, unchanged) -->
-        </div>
-
-        <p class="tagline" style="margin-top:14px;" aria-live="polite">
-          Coming soon.
-        </p>
-      </div>
-    </section>
-
-
-          <!-- Gravilhas -->
-    <section id="gravilhas" class="link-wrap">
-      <div class="section-inner backdrop-none">
-      <img src="/assets/images/gravilhas2.svg" alt="gravilhas" class="gravilhas" width="1240" height="1240" loading="lazy" decoding="async" />
-        <a class="full-link" href="index.html" aria-label="Go to homepage"></a>
-      </div>
-    </section>
-
-    <!-- FOOTER (same style as bio.html) -->
-    <footer>
-
-      <div class="rights">© <span id="year"></span> Dead Gravel All rights reserved.</div>
-
-      <div class="socials" role="list" aria-label="Social links">
-        <a role="listitem" aria-label="Instagram" href="https://instagram.com/deadgravel77" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor"/>
-            <circle cx="12" cy="12" r="4" stroke="currentColor"/>
-            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
-          </svg>
-        </a>
-        <a role="listitem" aria-label="Bandcamp" href="https://deadgravel.bandcamp.com/track/ruin-my-fun" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M3 17l5.5-10H21l-5.5 10H3z" fill="currentColor"/>
-          </svg>
-        </a>
-        <a role="listitem" aria-label="YouTube" href="https://www.youtube.com/@DeadGravel77" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="2" y="6" width="20" height="12" rx="3" stroke="currentColor"/>
-            <path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor"/>
-          </svg>
-        </a>
-        <a role="listitem" aria-label="Spotify" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="12" cy="12" r="9" stroke="currentColor"/>
-            <path d="M7 10c3-.6 7-.4 10 1M7.5 13c2.6-.4 5.8-.1 8 .9M7.8 15.8c1.9-.3 3.9 0 5.6 .7" stroke="currentColor" stroke-linecap="round"/>
-          </svg>
-        </a>
-      </div>
-
-      <!-- Subtle mini-credit -->
-      <div class="mini-credit" style="text-align:center; margin-top:12px; font-size:0.78rem; color:var(--ink-dim, #9aa0a6); opacity:0.85;">
-        <a href="https://ironsignalworks.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Site by Iron Signal Works</a>
-      </div>
-
-    </footer>
-  </main>
-
-    <!-- Construct email links at runtime to avoid exposing raw addresses in HTML
-         (prevents automatic email obfuscation scripts from being injected and
-         reduces network dependency chains). -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
-      (function(){
-        try {
-          var els = document.querySelectorAll('a[data-email-user]');
-          Array.prototype.forEach.call(els, function(a){
-            var user = a.getAttribute('data-email-user');
-            var domain = a.getAttribute('data-email-domain');
-            if(user && domain){
-              var email = user + '@' + domain;
-              a.setAttribute('href', 'mailto:' + email);
-              a.setAttribute('aria-label', a.getAttribute('aria-label') || ('Email ' + user));
-            }
-          });
-        } catch (e) {
-          // fail silently
+      // GitHub Pages SPA redirect handling.
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
-      })();
+      })(window.location);
     </script>
-    <script src="/assets/js/main.js" defer></script>
+    <title>Dead Gravel | Official Site</title>
+    <meta name="description" content="Dead Gravel official site. Modern western grit." />
+    <meta name="theme-color" content="#0b0f12" />
+
+    <link rel="icon" href="/icons/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/icons/favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/icons/favicon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dead Gravel" />
+    <meta property="og:title" content="Dead Gravel Official Site" />
+    <meta property="og:description" content="Modern western grit. New song 'Ruin My Fun' out now." />
+    <meta property="og:image" content="/assets/images/thumb.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dead Gravel Official Site" />
+    <meta name="twitter:description" content="Modern western grit. New song 'Ruin My Fun' out now." />
+    <meta name="twitter:image" content="/assets/images/thumb.jpg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Gloock&family=Six+Caps&family=Inter:wght@400;600;700&display=swap"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
