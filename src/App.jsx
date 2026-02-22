@@ -46,7 +46,8 @@ function upsertLink(rel, href) {
 }
 
 function applyRouteMeta(pathname) {
-  const meta = routeMeta[pathname] ?? routeMeta["/"];
+  const normalizedPath = pathname !== "/" ? pathname.replace(/\/+$/, "") : "/";
+  const meta = routeMeta[normalizedPath] ?? routeMeta["/"];
   document.title = meta.title;
 
   upsertMeta("name", "description", meta.description);
@@ -258,8 +259,8 @@ function App() {
         <div className="top-pad" aria-hidden="true" />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/bio" element={<BioPage />} />
-          <Route path="/merch" element={<MerchPage />} />
+          <Route path="/bio/*" element={<BioPage />} />
+          <Route path="/merch/*" element={<MerchPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />
