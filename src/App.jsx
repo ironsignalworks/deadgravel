@@ -3,6 +3,67 @@ import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 
 const CONTACT_EMAIL = "deadgravell77@gmail.com";
 const STORE_DISABLED = true;
+const SITE_URL = "https://deadgravel.com";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/thumb.jpg`;
+
+const routeMeta = {
+  "/": {
+    title: "Dead Gravel | Official Site",
+    description: "Rust, ruin, and rock'n'roll. Listen to 'Ruin My Fun' and explore the world of Dead Gravel.",
+    url: `${SITE_URL}/`
+  },
+  "/bio": {
+    title: "Dead Gravel | Bio",
+    description:
+      "Meet Dead Gravel: lineup, artwork, and the story behind their southern gothic grit and rock'n'roll sound.",
+    url: `${SITE_URL}/bio`
+  },
+  "/merch": {
+    title: "Dead Gravel | Merch",
+    description: "Official Dead Gravel merch and store updates.",
+    url: `${SITE_URL}/merch`
+  }
+};
+
+function upsertMeta(attr, key, value) {
+  let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", value);
+}
+
+function upsertLink(rel, href) {
+  let el = document.head.querySelector(`link[rel="${rel}"]`);
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", rel);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("href", href);
+}
+
+function applyRouteMeta(pathname) {
+  const meta = routeMeta[pathname] ?? routeMeta["/"];
+  document.title = meta.title;
+
+  upsertMeta("name", "description", meta.description);
+  upsertMeta("property", "og:title", meta.title);
+  upsertMeta("property", "og:description", meta.description);
+  upsertMeta("property", "og:url", meta.url);
+  upsertMeta("property", "og:image", DEFAULT_OG_IMAGE);
+  upsertMeta("property", "og:image:alt", "Dead Gravel promotional artwork");
+
+  upsertMeta("name", "twitter:title", meta.title);
+  upsertMeta("name", "twitter:description", meta.description);
+  upsertMeta("name", "twitter:url", meta.url);
+  upsertMeta("name", "twitter:image", DEFAULT_OG_IMAGE);
+  upsertMeta("name", "twitter:image:alt", "Dead Gravel promotional artwork");
+
+  upsertLink("canonical", meta.url);
+}
 
 const merchProducts = [
   {
@@ -142,6 +203,10 @@ function App() {
       }
     }
   }, [location.hash, location.pathname]);
+
+  useEffect(() => {
+    applyRouteMeta(location.pathname);
+  }, [location.pathname]);
 
   return (
     <div className={`site-shell ${routeClass}`}>
