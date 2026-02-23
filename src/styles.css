@@ -545,7 +545,10 @@ h2 {
 .bio-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "photo content";
+  grid-template-areas:
+    "photo content"
+    "photo body"
+    "photo lineup";
   column-gap: 26px;
   row-gap: 0;
   text-align: left;
@@ -563,8 +566,9 @@ h2 {
 .artwork-credit {
   margin: 0 0 14px;
   color: var(--ink-dim);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   line-height: 1.4;
+  text-align: right;
 }
 
 .artwork-credit a {
@@ -578,10 +582,12 @@ h2 {
 }
 
 .col-body {
+  grid-area: body;
   margin-top: 0;
 }
 
 .col-lineup {
+  grid-area: lineup;
   margin-top: 0;
 }
 
@@ -648,8 +654,16 @@ h2 {
     order: 2;
   }
 
+  .bio-grid .col-lineup {
+    order: 4;
+  }
+
+  .bio-grid .col-body {
+    order: 3;
+  }
+
   .artwork-credit {
-    text-align: center;
+    text-align: right;
   }
 }
 

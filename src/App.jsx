@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 
 const CONTACT_EMAIL = "deadgravell77@gmail.com";
@@ -24,6 +25,25 @@ const routeMeta = {
     url: `${SITE_URL}/merch`
   }
 };
+
+const SMOOTH_EASE = [0.22, 1, 0.36, 1];
+
+function getRevealProps(shouldReduceMotion, delay = 0, y = 18) {
+  if (shouldReduceMotion) {
+    return {
+      initial: false,
+      whileInView: { opacity: 1 },
+      viewport: { once: true, amount: 0.2 }
+    };
+  }
+
+  return {
+    initial: { opacity: 0, y },
+    whileInView: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, delay, ease: SMOOTH_EASE },
+    viewport: { once: true, amount: 0.2 }
+  };
+}
 
 function normalizePath(pathname) {
   return pathname !== "/" ? pathname.replace(/\/+$/, "") : "/";
@@ -333,6 +353,7 @@ function HomePage() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [logoHidden, setLogoHidden] = useState(false);
   const heroRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!heroRef.current) return;
@@ -349,7 +370,7 @@ function HomePage() {
   return (
     <>
       <section id="home" ref={heroRef}>
-        <div className="section-inner">
+        <motion.div className="section-inner" {...getRevealProps(shouldReduceMotion, 0.04, 14)}>
           <img
             src="/assets/images/logo1.svg"
             alt="Dead Gravel Logo"
@@ -358,11 +379,11 @@ function HomePage() {
             height="420"
           />
           <h2 className="tagline">Rust, Ruin, and Rock&amp;Roll</h2>
-        </div>
+        </motion.div>
       </section>
 
       <section id="news">
-        <div className="section-inner">
+        <motion.div className="section-inner" {...getRevealProps(shouldReduceMotion, 0.08)}>
           <article className="rundown-feature">
             <span className="rundown-accent" aria-hidden="true" />
             <h3>
@@ -379,11 +400,11 @@ function HomePage() {
               salvation, told through rusted guitars, slow-burn grooves, and voices that sound half-dead, half-divine.
             </p>
           </article>
-        </div>
+        </motion.div>
       </section>
 
       <section id="demo">
-        <div className="section-inner grid2">
+        <motion.div className="section-inner grid2" {...getRevealProps(shouldReduceMotion, 0.1)}>
           <div>
             <img
               src="/assets/images/demo1.webp"
@@ -407,11 +428,11 @@ function HomePage() {
               </a>
             </p>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <section id="video">
-        <div className="section-inner">
+        <motion.div className="section-inner" {...getRevealProps(shouldReduceMotion, 0.12)}>
           <h2 className="brand">"Ruin My Fun"</h2>
           <div className="quote-box" role="note" aria-label="Video description">
             <span className="quote-accent" aria-hidden="true" />
@@ -434,14 +455,14 @@ function HomePage() {
               </button>
             )}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <section id="shows">
-        <div className="section-inner">
+        <motion.div className="section-inner" {...getRevealProps(shouldReduceMotion, 0.1, 12)}>
           <h2>Shows</h2>
           <p className="tagline">Coming soon.</p>
-        </div>
+        </motion.div>
       </section>
 
       <Gravilhas image="/assets/images/gravilhas2.svg" />
@@ -450,11 +471,13 @@ function HomePage() {
 }
 
 function BioPage() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <>
       <section id="bio">
-        <div className="section-inner bio-grid">
-          <div className="col-media">
+        <motion.div className="section-inner bio-grid" {...getRevealProps(shouldReduceMotion, 0.06)}>
+          <motion.div className="col-media" {...getRevealProps(shouldReduceMotion, 0.1, 14)}>
             <img src="/assets/images/lineup.jpeg" alt="Dead Gravel lineup artwork" className="media lineup-media" />
             <p className="artwork-credit">
               Artwork by{" "}
@@ -462,9 +485,9 @@ function BioPage() {
                 Angie Izquierdo
               </a>
             </p>
-          </div>
+          </motion.div>
 
-          <div className="col-content">
+          <motion.div className="col-content" {...getRevealProps(shouldReduceMotion, 0.08, 16)}>
             <div className="article col-intro">
               <div className="kicker">Where the crows circle, halleluja!</div>
               <h2 className="brand">Rust, Ruin and Rock'n'Roll</h2>
@@ -475,33 +498,33 @@ function BioPage() {
                 smoke, salvation, and a prayer you won't remember in the morning.
               </p>
             </div>
+          </motion.div>
 
-            <div className="article col-body">
-              <p>
-                A five-piece storm of desert thunder and dive-bar soul, DEAD GRAVEL blends swamp and swagger into
-                something born to be blasted through busted speakers.
-              </p>
-            </div>
+          <motion.div className="article col-body" {...getRevealProps(shouldReduceMotion, 0.12, 12)}>
+            <p>
+              A five-piece storm of desert thunder and dive-bar soul, DEAD GRAVEL blends swamp and swagger into
+              something born to be blasted through busted speakers.
+            </p>
+          </motion.div>
 
-            <div className="article col-lineup">
-              <p>
-                <strong>Lineup (left-to-right):</strong>
-                <br />
-                J. Nash - Guitars
-                <br />
-                Joey Del Grave - Vocals, Harmonica
-                <br />
-                Layla Stone - Keyboards, Vocals
-                <br />
-                Dusty Reyes - Guitar
-                <br />
-                Victor Silver - Drums
-                <br />
-                Sloane Vega - Bass
-              </p>
-            </div>
-          </div>
-        </div>
+          <motion.div className="article col-lineup" {...getRevealProps(shouldReduceMotion, 0.14, 12)}>
+            <p>
+              <strong>Lineup (left-to-right):</strong>
+              <br />
+              J. Nash - Guitars
+              <br />
+              Joey Del Grave - Vocals, Harmonica
+              <br />
+              Layla Stone - Keyboards, Vocals
+              <br />
+              Dusty Reyes - Guitar
+              <br />
+              Victor Silver - Drums
+              <br />
+              Sloane Vega - Bass
+            </p>
+          </motion.div>
+        </motion.div>
       </section>
       <Gravilhas image="/assets/images/gravilhas3.svg" />
     </>
@@ -509,10 +532,12 @@ function BioPage() {
 }
 
 function MerchPage() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <>
       <section id="header">
-        <div className="section-inner">
+        <motion.div className="section-inner" {...getRevealProps(shouldReduceMotion, 0.06, 14)}>
           <div className="kicker">Official Store</div>
           <h2 className="brand">Dead Gravel Merch</h2>
           <div className="rule" />
@@ -520,18 +545,18 @@ function MerchPage() {
             Welcome to the <strong>Dead Gravel</strong> store. Prices include flat-rate EU shipping. For shipping
             outside the EU, <a href={`mailto:${CONTACT_EMAIL}`}>email us</a>. Checkout uses Stripe and PayPal.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       <section id="merch">
-        <div className="section-inner merch-grid">
-          {merchProducts.map((product) => (
-            <MerchCard key={product.id} product={product} />
+        <motion.div className="section-inner merch-grid" {...getRevealProps(shouldReduceMotion, 0.08, 10)}>
+          {merchProducts.map((product, index) => (
+            <MerchCard key={product.id} product={product} index={index} shouldReduceMotion={shouldReduceMotion} />
           ))}
-        </div>
+        </motion.div>
 
         {STORE_DISABLED && (
-          <div className="section-inner coming-soon-wrap">
+          <motion.div className="section-inner coming-soon-wrap" {...getRevealProps(shouldReduceMotion, 0.16, 10)}>
             <div className="coming-soon">
               <div>
                 <strong>Merch Coming Soon</strong>
@@ -541,7 +566,7 @@ function MerchPage() {
                 updates.
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </section>
 
@@ -550,14 +575,17 @@ function MerchPage() {
   );
 }
 
-function MerchCard({ product }) {
+function MerchCard({ product, index, shouldReduceMotion }) {
   const [selectedColor, setSelectedColor] = useState(product.defaultColor);
   const [selectedSize, setSelectedSize] = useState("");
   const activeColor = product.colors.find((color) => color.label === selectedColor) ?? product.colors[0];
   const disabledCheckout = STORE_DISABLED || !selectedSize;
 
   return (
-    <article className={`product-card ${STORE_DISABLED ? "is-disabled" : ""}`}>
+    <motion.article
+      className={`product-card ${STORE_DISABLED ? "is-disabled" : ""}`}
+      {...getRevealProps(shouldReduceMotion, 0.1 + index * 0.06, 14)}
+    >
       <img
         src={activeColor.image}
         alt={`${product.title} - ${activeColor.label}`}
@@ -617,7 +645,7 @@ function MerchCard({ product }) {
         )}
       </div>
 
-    </article>
+    </motion.article>
   );
 }
 
