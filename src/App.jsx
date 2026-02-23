@@ -664,40 +664,95 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer>
-      <div className="rights">Copyright {year} Dead Gravel. All rights reserved.</div>
+    <footer className="site-footer">
+      <div className="footer-grid">
+        <div className="footer-col">
+          <h2 className="footer-title">Dead Gravel</h2>
+          <p className="footer-copy">
+            Heavy southern grit, burnt-edge melodies, and loud rock'n'roll from Dead Gravel.
+          </p>
+        </div>
 
-      <div className="socials" role="list" aria-label="Social links">
-        <Link role="listitem" aria-label="Back to top" to={{ pathname: "/", hash: "#home" }}>
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" />
-            <circle cx="12" cy="12" r="4" stroke="currentColor" />
-            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" />
-          </svg>
-        </Link>
-        <Link role="listitem" aria-label="Back to top" to={{ pathname: "/", hash: "#home" }}>
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none">
-            <path d="M3 17l5.5-10H21l-5.5 10H3z" fill="currentColor" />
-          </svg>
-        </Link>
-        <Link role="listitem" aria-label="Back to top" to={{ pathname: "/", hash: "#home" }}>
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none">
-            <rect x="2" y="6" width="20" height="12" rx="3" stroke="currentColor" />
-            <path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" />
-          </svg>
-        </Link>
-        <Link role="listitem" aria-label="Back to top" to={{ pathname: "/", hash: "#home" }}>
-          <svg viewBox="0 0 24 24" width="56" height="56" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" />
-            <path d="M7 10c3-.6 7-.4 10 1M7.5 13c2.6-.4 5.8-.1 8 .9M7.8 15.8c1.9-.3 3.9 0 5.6 .7" stroke="currentColor" />
-          </svg>
-        </Link>
+        <div className="footer-col">
+          <h3>Explore</h3>
+          <div className="footer-links">
+            <NavLink to="/" end>
+              Home
+            </NavLink>
+            <Link to={{ pathname: "/", hash: "#shows" }}>Shows</Link>
+            <NavLink to="/bio">Bio</NavLink>
+            <NavLink to="/merch">Merch</NavLink>
+          </div>
+        </div>
+
+        <div className="footer-col">
+          <h3>Follow</h3>
+          <div className="footer-socials" role="list" aria-label="Follow Dead Gravel">
+            <a
+              className="social-icon"
+              role="listitem"
+              href="https://www.instagram.com/deadgravel77/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" />
+                <circle cx="12" cy="12" r="4.2" stroke="currentColor" />
+                <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+              </svg>
+            </a>
+            <a
+              className="social-icon"
+              role="listitem"
+              href="https://www.youtube.com/watch?v=XaUY1Xp0Ppc"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="YouTube"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2" y="6" width="20" height="12" rx="3" stroke="currentColor" />
+                <path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" />
+              </svg>
+            </a>
+            <a
+              className="social-icon"
+              role="listitem"
+              href="https://deadgravel.bandcamp.com/track/ruin-my-fun"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Bandcamp"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 17l5.5-10H21l-5.5 10H3z" fill="currentColor" />
+              </svg>
+            </a>
+            <a className="social-icon" role="listitem" href={`mailto:${CONTACT_EMAIL}`} aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" />
+                <path d="M3 7.5l9 6 9-6" stroke="currentColor" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div className="footer-col">
+          <h3>Contact</h3>
+          <div className="footer-links">
+            <Link to={{ pathname: "/", hash: "#home" }}>Back to top</Link>
+            <a href={`mailto:${CONTACT_EMAIL}`}>Booking &amp; Press</a>
+            <a href={`mailto:${CONTACT_EMAIL}`}>General Inquiries</a>
+          </div>
+        </div>
       </div>
 
-      <div className="mini-credit">
-        <a href="https://ironsignalworks.com" target="_blank" rel="noreferrer">
-          Site by Iron Signal Works
-        </a>
+      <div className="footer-bottom">
+        <div className="rights">Copyright {year} Dead Gravel. All rights reserved.</div>
+        <div className="mini-credit">
+          <a href="https://ironsignalworks.com" target="_blank" rel="noreferrer">
+            Site by Iron Signal Works
+          </a>
+        </div>
       </div>
     </footer>
   );
