@@ -350,7 +350,6 @@ function App() {
 }
 
 function HomePage() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const [logoHidden, setLogoHidden] = useState(false);
   const heroRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
@@ -419,8 +418,7 @@ function HomePage() {
           <div className="col-copy">
             <h2>New Demo Out Now</h2>
             <p>
-              Hear the first cut of our upcoming demo Dustborn - raw, loud, and unvarnished. Recorded straight to the
-              bone.
+              Listen to the full demo on Bandcamp.
             </p>
             <p>
               <a className="btn" href="https://deadgravel.bandcamp.com/track/ruin-my-fun" target="_blank" rel="noreferrer">
@@ -441,19 +439,35 @@ function HomePage() {
               smile. Loud, loose, and unapologetically alive.
             </p>
           </div>
-          <div className="video-wrap">
-            {videoLoaded ? (
-              <iframe
-                src="https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU"
-                title="Dead Gravel - Ruin My Fun"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ) : (
-              <button className="video-load-btn" type="button" onClick={() => setVideoLoaded(true)}>
-                <span>Play Video</span>
-              </button>
-            )}
+          <div className="video-grid">
+            <div className="video-card">
+              <div className="video-wrap">
+                <iframe
+                  src="https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU"
+                  title="Dead Gravel - Ruin My Fun"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+
+            <div className="video-card video-card-overlap">
+              <h2 className="brand">"Jaded"</h2>
+              <div className="quote-box" role="note" aria-label="Jaded video description">
+                <span className="quote-accent" aria-hidden="true" />
+                <p className="quote">
+                  "Jaded" is high-energy rock&amp;roll for no-hope pilgrims - fast, restless, and built for the road.
+                </p>
+              </div>
+              <div className="video-wrap">
+                <iframe
+                  src="https://www.youtube.com/embed/i-TC3hCkpl8"
+                  title="Dead Gravel - Jaded"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
           </div>
         </motion.div>
       </section>
@@ -487,43 +501,45 @@ function BioPage() {
             </p>
           </motion.div>
 
-          <motion.div className="col-content" {...getRevealProps(shouldReduceMotion, 0.08, 16)}>
-            <div className="article col-intro">
-              <div className="kicker">Where the crows circle, halleluja!</div>
-              <h2 className="brand">Rust, Ruin and Rock'n'Roll</h2>
-              <div className="rule" />
+          <div className="bio-copy">
+            <motion.div className="col-content" {...getRevealProps(shouldReduceMotion, 0.08, 16)}>
+              <div className="article col-intro">
+                <div className="kicker">Where the crows circle, halleluja!</div>
+                <h2 className="brand">Rust, Ruin and Rock'n'Roll</h2>
+                <div className="rule" />
 
-              <p className="lede">
-                <strong>DEAD GRAVEL</strong> drags rock'n'roll through the dirt and makes it holy again. It's sweat,
-                smoke, salvation, and a prayer you won't remember in the morning.
+                <p className="lede">
+                  <strong>DEAD GRAVEL</strong> drags rock'n'roll through the dirt and makes it holy again. It's sweat,
+                  smoke, salvation, and a prayer you won't remember in the morning.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div className="article col-body" {...getRevealProps(shouldReduceMotion, 0.12, 12)}>
+              <p>
+                A five-piece storm of desert thunder and dive-bar soul, DEAD GRAVEL blends swamp and swagger into
+                something born to be blasted through busted speakers.
               </p>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          <motion.div className="article col-body" {...getRevealProps(shouldReduceMotion, 0.12, 12)}>
-            <p>
-              A five-piece storm of desert thunder and dive-bar soul, DEAD GRAVEL blends swamp and swagger into
-              something born to be blasted through busted speakers.
-            </p>
-          </motion.div>
-
-          <motion.div className="article col-lineup" {...getRevealProps(shouldReduceMotion, 0.14, 12)}>
-            <p>
-              <strong>Lineup (left-to-right):</strong>
-              <br />
-              J. Nash - Guitars
-              <br />
-              Joey Del Grave - Vocals, Harmonica
-              <br />
-              Layla Stone - Keyboards, Vocals
-              <br />
-              Dusty Reyes - Guitar
-              <br />
-              Victor Silver - Drums
-              <br />
-              Sloane Vega - Bass
-            </p>
-          </motion.div>
+            <motion.div className="article col-lineup" {...getRevealProps(shouldReduceMotion, 0.14, 12)}>
+              <p>
+                <strong>Lineup (left-to-right):</strong>
+                <br />
+                J. Nash - Guitars
+                <br />
+                Joey Del Grave - Vocals, Harmonica
+                <br />
+                Layla Stone - Keyboards, Vocals
+                <br />
+                Dusty Reyes - Guitar
+                <br />
+                Victor Silver - Drums
+                <br />
+                Sloane Vega - Bass
+              </p>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
       <Gravilhas image="/assets/images/gravilhas3.svg" />
@@ -667,7 +683,9 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-grid">
         <div className="footer-col">
-          <h2 className="footer-title">Dead Gravel</h2>
+          <Link to={{ pathname: "/", hash: "#home" }} aria-label="Back to top homepage">
+            <img src="/assets/images/logo1.svg" alt="Dead Gravel" className="footer-logo" width="240" height="70" loading="lazy" />
+          </Link>
           <p className="footer-copy">
             Heavy southern grit, burnt-edge melodies, and loud rock'n'roll from Dead Gravel.
           </p>
