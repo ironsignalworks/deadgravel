@@ -683,9 +683,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-grid">
         <div className="footer-col">
-          <Link to={{ pathname: "/", hash: "#home" }} aria-label="Back to top homepage">
-            <img src="/assets/images/logo1.svg" alt="Dead Gravel" className="footer-logo" width="240" height="70" loading="lazy" />
-          </Link>
+          <img src="/assets/images/logo1.svg" alt="Dead Gravel" className="footer-logo" width="240" height="70" loading="lazy" />
           <p className="footer-copy">
             Heavy southern grit, burnt-edge melodies, and loud rock'n'roll from Dead Gravel.
           </p>
