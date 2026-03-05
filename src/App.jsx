@@ -353,6 +353,23 @@ function HomePage() {
   const [logoHidden, setLogoHidden] = useState(false);
   const heroRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+  const featuredVideos = [
+    {
+      title: '"Ruin My Fun"',
+      ariaLabel: "Video description",
+      description:
+        '"Ruin My Fun," the opening track from the demo Dustborn, kicks down the door with a sneer and a smile. Loud, loose, and unapologetically alive.',
+      src: "https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU",
+      iframeTitle: "Dead Gravel - Ruin My Fun"
+    },
+    {
+      title: '"Jaded"',
+      ariaLabel: "Jaded video description",
+      description: '"Jaded" is high-energy rock&roll for no-hope pilgrims - fast, restless, and built for the road.',
+      src: "https://www.youtube.com/embed/i-TC3hCkpl8",
+      iframeTitle: "Dead Gravel - Jaded"
+    }
+  ];
 
   useEffect(() => {
     if (!heroRef.current) return;
@@ -376,6 +393,9 @@ function HomePage() {
             className={`hero-logo ${logoHidden ? "logo-hidden" : ""}`}
             width="1440"
             height="420"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
           />
           <h2 className="tagline">Rust, Ruin, and Rock&amp;Roll</h2>
         </motion.div>
@@ -431,43 +451,24 @@ function HomePage() {
 
       <section id="video">
         <motion.div className="section-inner" {...getRevealProps(shouldReduceMotion, 0.12)}>
-          <h2 className="brand">"Ruin My Fun"</h2>
-          <div className="quote-box" role="note" aria-label="Video description">
-            <span className="quote-accent" aria-hidden="true" />
-            <p className="quote">
-              "Ruin My Fun," the opening track from the demo <em>Dustborn</em>, kicks down the door with a sneer and a
-              smile. Loud, loose, and unapologetically alive.
-            </p>
-          </div>
           <div className="video-grid">
-            <div className="video-card">
-              <div className="video-wrap">
-                <iframe
-                  src="https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU"
-                  title="Dead Gravel - Ruin My Fun"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
-            </div>
-
-            <div className="video-card video-card-overlap">
-              <h2 className="brand">"Jaded"</h2>
-              <div className="quote-box" role="note" aria-label="Jaded video description">
-                <span className="quote-accent" aria-hidden="true" />
-                <p className="quote">
-                  "Jaded" is high-energy rock&amp;roll for no-hope pilgrims - fast, restless, and built for the road.
-                </p>
-              </div>
-              <div className="video-wrap">
-                <iframe
-                  src="https://www.youtube.com/embed/i-TC3hCkpl8"
-                  title="Dead Gravel - Jaded"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
-            </div>
+            {featuredVideos.map((video, index) => (
+              <article key={video.iframeTitle} className={`video-card ${index % 2 ? "is-right" : "is-left"}`}>
+                <h2 className="brand">{video.title}</h2>
+                <div className="quote-box" role="note" aria-label={video.ariaLabel}>
+                  <span className="quote-accent" aria-hidden="true" />
+                  <p className="quote">{video.description}</p>
+                </div>
+                <div className="video-wrap">
+                  <iframe
+                    src={video.src}
+                    title={video.iframeTitle}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              </article>
+            ))}
           </div>
         </motion.div>
       </section>

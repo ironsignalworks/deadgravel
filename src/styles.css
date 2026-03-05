@@ -489,43 +489,40 @@ h2 {
 
 .video-grid {
   width: min(980px, 100%);
-  margin: 52px auto 0;
-  display: block;
-  position: relative;
-  padding-bottom: 120px;
+  margin: 36px auto 0;
+  display: grid;
+  gap: 28px;
 }
 
 .video-card {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   width: min(690px, 100%);
   position: relative;
-  z-index: 1;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(8, 10, 14, 0.84), rgba(8, 10, 14, 0.64));
+  border: 1px solid #ffffff22;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px #000a;
 }
 
-.video-card-overlap {
-  width: min(690px, 100%);
-  margin-top: -28px;
+.video-card.is-left {
+  margin-right: auto;
+}
+
+.video-card.is-right {
   margin-left: auto;
-  gap: 0;
-  align-items: flex-end;
-  z-index: 2;
+  transform: translateX(24px);
 }
 
-.video-card-overlap .brand {
-  width: min(580px, 100%);
-  margin: 0 0 10px;
-  align-self: flex-end;
-  text-align: right;
+.video-card .brand {
+  margin: 0;
 }
 
-.video-card-overlap .quote-box {
-  width: min(580px, 100%);
-  margin: 12px 0 24px;
-}
-
-.video-card-overlap .quote {
-  text-align: right;
+.video-card .quote-box {
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .video-title {
@@ -555,16 +552,12 @@ h2 {
 
 @media (max-width: 900px) {
   .video-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding-bottom: 0;
+    gap: 18px;
   }
 
-  .video-card,
-  .video-card-overlap {
+  .video-card {
     width: 100%;
-    margin-top: 0;
+    transform: none;
   }
 }
 
