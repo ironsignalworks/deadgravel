@@ -359,14 +359,14 @@ function HomePage() {
       ariaLabel: "Video description",
       description:
         '"Ruin My Fun," the opening track from the demo Dustborn, kicks down the door with a sneer and a smile. Loud, loose, and unapologetically alive.',
-      src: "https://www.youtube.com/embed/XaUY1Xp0Ppc?si=gYa8MHju3BwTquNU",
+      videoId: "XaUY1Xp0Ppc",
       iframeTitle: "Dead Gravel - Ruin My Fun"
     },
     {
       title: '"Jaded"',
       ariaLabel: "Jaded video description",
       description: '"Jaded" is high-energy rock&roll for no-hope pilgrims - fast, restless, and built for the road.',
-      src: "https://www.youtube.com/embed/i-TC3hCkpl8",
+      videoId: "i-TC3hCkpl8",
       iframeTitle: "Dead Gravel - Jaded"
     }
   ];
@@ -459,14 +459,7 @@ function HomePage() {
                   <span className="quote-accent" aria-hidden="true" />
                   <p className="quote">{video.description}</p>
                 </div>
-                <div className="video-wrap">
-                  <iframe
-                    src={video.src}
-                    title={video.iframeTitle}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                </div>
+                <LiteYouTubeEmbed videoId={video.videoId} title={video.iframeTitle} />
               </article>
             ))}
           </div>
@@ -666,11 +659,44 @@ function MerchCard({ product, index, shouldReduceMotion }) {
   );
 }
 
+function LiteYouTubeEmbed({ videoId, title }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const embedSrc = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+  const posterSrc = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+  return (
+    <div className="video-wrap">
+      {isLoaded ? (
+        <iframe
+          src={embedSrc}
+          title={title}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      ) : (
+        <button className="video-embed-btn" type="button" onClick={() => setIsLoaded(true)} aria-label={`Play ${title}`}>
+          <img
+            src={posterSrc}
+            alt=""
+            className="video-poster"
+            width="480"
+            height="360"
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="video-play">Play Video</span>
+        </button>
+      )}
+    </div>
+  );
+}
+
 function Gravilhas({ image }) {
   return (
     <section id="gravilhas" className="link-wrap">
       <div className="section-inner">
-        <img src={image} alt="gravilhas" className="gravilhas" loading="lazy" decoding="async" />
+        <img src={image} alt="gravilhas" className="gravilhas" width="340" height="340" loading="lazy" decoding="async" />
         <Link className="full-link" to={{ pathname: "/", hash: "#home" }} aria-label="Back to top" />
       </div>
     </section>

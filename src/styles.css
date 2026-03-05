@@ -550,6 +550,47 @@ h2 {
   border: 0;
 }
 
+.video-embed-btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: #05070a;
+  color: #fff;
+}
+
+.video-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.88;
+  transition: opacity 160ms ease;
+}
+
+.video-embed-btn:hover .video-poster,
+.video-embed-btn:focus-visible .video-poster {
+  opacity: 1;
+}
+
+.video-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid #ffffff33;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
   .video-grid {
     gap: 18px;
